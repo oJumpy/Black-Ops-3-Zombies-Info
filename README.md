@@ -1,4 +1,4 @@
-# BO3 Zombies for High Rounders: Known Issues, Errors, Niche Knowledge
+# BO3 Zombies for High Rounders
 
 ## Table of Contents
 - [Sleep / Hibernate](#sleep--hibernate)
