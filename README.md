@@ -7,13 +7,13 @@
 - [Read Error Tracker](#read-error-tracker)
 - [GK Freeze Detailed](#gk-freeze-detailed)
 - [Darkness](#darkness)
--[25 Day Error Bypass](#25-day-error-bypass)
+- [25 Day Error Bypass](#25-day-error-bypass)
 - [Niche Knowledge](#niche-knowledge)
 - [Frozen Rounds](#frozen-rounds)
 
 ---
 
-## Sleep / Hibernate
+# Sleep / Hibernate
 
 *Disclaimer: While this method works for most players, results can vary depending on your specific PC configuration. Always test first.*
 
@@ -82,16 +82,16 @@ For the purpose of pausing your game overnight, there is no difference.
 
 ---
 
-## Workshop Mods
+# Workshop Mods
 
-# [Strat Tester - Highlight & SPH](https://steamcommunity.com/sharedfiles/filedetails/?id=3715324145)
+## [Strat Tester - Highlight & SPH](https://steamcommunity.com/sharedfiles/filedetails/?id=3715324145)
 https://steamcommunity.com/sharedfiles/filedetails/?id=3715324145
 Not the greatest strat tester, but it’s best we’ve got
 
-#[Zombies Community patch](https://steamcommunity.com/sharedfiles/filedetails/?id=3003539961)
+##[Zombies Community patch](https://steamcommunity.com/sharedfiles/filedetails/?id=3003539961)
 https://steamcommunity.com/sharedfiles/filedetails/?id=3003539961
 
-# [Zombies Community patch 4Modderz](https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538)
+## [Zombies Community patch 4Modderz](https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538)
 https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 
 ### *Aesthetic Mods*
@@ -100,7 +100,7 @@ By [oJumpy](https://steamcommunity.com/profiles/76561199211441639/myworkshopfile
 
 ---
 
-## Errors
+# Errors
 
 ### Rags Slams / Nade Swap / Nade Cancel Error:
 - **NOT** *the same as Grenade / Widows CI Error -*
@@ -312,7 +312,7 @@ Killing manglers seems to actually be safe, they don’t seem to be leaking anyt
 
 ---
 
-## Read Error Tracker
+# Read Error Tracker
 
 ### How To Read Livesplit Error Tracker
 
@@ -336,7 +336,7 @@ What each tracker shows:
 
 ---
 
-## GK Freeze Detailed
+# GK Freeze Detailed
 
 Things kxg avoids that he suggests all players do in order to ensure a 255 first try:
 - Only use deadwire and turned
@@ -383,7 +383,7 @@ In the time since kxg’s no gum 255 there have been only 2 more 255s. The first
 
 ---
 
-## Darkness
+# Darkness
 
 *This is how fast you will reach Darkness in BO3, since it’s dependent on your FPS, even while the game is paused.*
 *Darkness does NOT occur on every map / level and it’s also zone / area dependent*
@@ -446,7 +446,7 @@ Revelations - Take the teleporter from Verruckt to Spawn, then run back to Verru
 
 ---
 
-## 25 Day Error Bypass
+# 25 Day Error Bypass
 
 *This method **freezes the timer** during hibernation, it does NOT reset it.*
 
@@ -487,7 +487,7 @@ It's probably possible to wait until the timer is close to the limit before doin
 
 ---
 
-## Niche Knowledge
+# Niche Knowledge
 
 *I could be wrong about some of this.*
 *Not everything here is 100% confirmed.*
@@ -724,7 +724,7 @@ Because there is no “else” statement at the end. If level.dog_round_count is
 
 ---
 
-## Frozen Rounds
+# Frozen Rounds
 
 **Universal**
 Things like Fireworks, Turned (explosion effect), Thunder Wall, Flogger, Ice Staff
