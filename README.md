@@ -503,11 +503,26 @@ DE - Instead of taking **Wundersphere**, you just **Teleport** to the Rocket Lau
 Revelations - Take the teleporter from Verruckt to Spawn, then run back to Verruckt.
 
 *Shadows of Evil - Most of Waterfront Area (No Workarounds)*
-![](images/image16.png) ![](images/image6.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/9b9f2435-b5e5-48c3-9271-eedb226e6220" width="490" />
+  &nbsp;
+  <img src="https://github.com/user-attachments/assets/fdede43c-801b-4479-914c-384d7e866cde" width="490" />
+</p>
 
 *Origins - Gen 6 and Crazy Place (No Workarounds)*
-![](images/image9.png) ![](images/image4.png)
-![](images/image11.png) ![](images/image14.png) ![](images/image3.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1315e4a8-172d-49ca-8213-c7f624d99a64" width="490" />
+  &nbsp;
+  <img src="https://github.com/user-attachments/assets/a8c12c95-5ede-4a2e-8101-43f362fe61bf" width="490" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d8064cc-0761-4a99-a24a-67bfc225e090" width="490" />
+  &nbsp;
+  <img src="https://github.com/user-attachments/assets/63ac3a71-6ce8-46ef-967f-fd53fd23a757" width="490" />
+</p>
+
+![](images/image3.png)
 
 ---
 
