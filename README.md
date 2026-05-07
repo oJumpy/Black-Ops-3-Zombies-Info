@@ -1,37 +1,45 @@
 # BO3 Zombies Infos for High Rounders
 
-[Main Document<img width="112" height="112" alt="Google Doc" src="https://github.com/user-attachments/assets/03ca05a4-c1e1-4f19-b5ac-4e21b8514435" />](https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w)
+### [Main Document<img width="112" height="112" alt="Google Doc" src="https://github.com/user-attachments/assets/03ca05a4-c1e1-4f19-b5ac-4e21b8514435" />](https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w)
 
 
 ## Contents
-- [Sleep / Hibernate](#sleep--hibernate)
+### **[Sleep / Hibernate](#sleep--hibernate)**
   - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
-- [Workshop Mods](#workshop-mods)
+---
+### **[Workshop Mods](#workshop-mods)**
   - [Strat Tester - Highlight & SPH](#strat-tester---highlight--sph)
   - [Zombies Community patch](#zombies-community-patch)
   - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
   - [Aesthetic Mods](#aesthetic-mods)
-- [Errors](#errors)
+---
+### **[Frozen Rounds](#frozen-rounds)**
+---
+### **[Errors](#errors)**
   - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
   - [Throwable Equipment Error](#throwable-equipment-error)
   - [“Hitmarker” Freeze](#hitmarker-freeze)
   - [Early Reset / G-Spawn](#early-reset--g-spawn)
   - [Shadows of Evil Error](#shadows-of-evil-error)
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
-- [Read Error Tracker](#read-error-tracker)
+---
+### **[Read Error Tracker](#read-error-tracker)**
   - [How To Read Livesplit Error Tracker](#how-to-read-livesplit-error-tracker)
-- [GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)
-- [Darkness](#darkness)
+---
+### **[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
+---
+### **[Darkness](#darkness)**
   - [Hibernate / Sleep PC (Suspending the game)](#hibernate--sleep-pc-suspending-the-game)
   - [Darkness Video + Images](#darkness-video--images)
-- [25 Day Error Bypass](#25-day-error-bypass)
-- [Niche Knowledge](#niche-knowledge)
+---
+### **[25 Day Error Bypass](#25-day-error-bypass)**
+---
+### **[Niche Knowledge](#niche-knowledge)**
   - [Instakill Drop Behavior](#instakill-drop-behavior)
   - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   - [Spiders behavior on ZnS](#spiders-behavior-on-zns)
   - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
   - [Zombies Health behavior from round 112+](#zombies-health-behavior-from-round-112)
-- [Frozen Rounds](#frozen-rounds)
 
 ---
 
