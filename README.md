@@ -13,7 +13,7 @@
   - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
   - [Aesthetic Mods](#aesthetic-mods)
 ---
-**[Torso/Invisibles/ Rounds](#frozen-rounds)**
+**[Torso/Invisibles Rounds](#frozen-rounds)**
 
 ---
 **[Errors](#errors)**
