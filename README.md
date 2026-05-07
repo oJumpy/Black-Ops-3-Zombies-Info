@@ -4,18 +4,19 @@
 
 
 ## Contents
-### **[Sleep / Hibernate](#sleep--hibernate)**
+**[Sleep / Hibernate](#sleep--hibernate)**
   - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
 ---
-### **[Workshop Mods](#workshop-mods)**
+**[Workshop Mods](#workshop-mods)**
   - [Strat Tester - Highlight & SPH](#strat-tester---highlight--sph)
   - [Zombies Community patch](#zombies-community-patch)
   - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
   - [Aesthetic Mods](#aesthetic-mods)
 ---
-### **[Frozen Rounds](#frozen-rounds)**
+**[Frozen Rounds](#frozen-rounds)**
+
 ---
-### **[Errors](#errors)**
+**[Errors](#errors)**
   - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
   - [Throwable Equipment Error](#throwable-equipment-error)
   - [“Hitmarker” Freeze](#hitmarker-freeze)
@@ -23,18 +24,20 @@
   - [Shadows of Evil Error](#shadows-of-evil-error)
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
 ---
-### **[Read Error Tracker](#read-error-tracker)**
+**[Read Error Tracker](#read-error-tracker)**
   - [How To Read Livesplit Error Tracker](#how-to-read-livesplit-error-tracker)
 ---
-### **[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
+**[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
+
 ---
-### **[Darkness](#darkness)**
+**[Darkness](#darkness)**
   - [Hibernate / Sleep PC (Suspending the game)](#hibernate--sleep-pc-suspending-the-game)
   - [Darkness Video + Images](#darkness-video--images)
 ---
-### **[25 Day Error Bypass](#25-day-error-bypass)**
+**[25 Day Error Bypass](#25-day-error-bypass)**
+
 ---
-### **[Niche Knowledge](#niche-knowledge)**
+**[Niche Knowledge](#niche-knowledge)**
   - [Instakill Drop Behavior](#instakill-drop-behavior)
   - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   - [Spiders behavior on ZnS](#spiders-behavior-on-zns)
