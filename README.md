@@ -1,14 +1,36 @@
-# BO3 Zombies for High Rounders
+# BO3 Zombies Infos for High Rounders
 
-## Table of Contents
+[Main Document<img width="112" height="112" alt="Google Doc" src="https://github.com/user-attachments/assets/03ca05a4-c1e1-4f19-b5ac-4e21b8514435" />](https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w)
+
+
+## Contents
 - [Sleep / Hibernate](#sleep--hibernate)
+  - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
 - [Workshop Mods](#workshop-mods)
+  - [Strat Tester - Highlight & SPH](#strat-tester---highlight--sph)
+  - [Zombies Community patch](#zombies-community-patch)
+  - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
+  - [Aesthetic Mods](#aesthetic-mods)
 - [Errors](#errors)
+  - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
+  - [Throwable Equipment Error](#throwable-equipment-error)
+  - [“Hitmarker” Freeze](#hitmarker-freeze)
+  - [Early Reset / G-Spawn](#early-reset--g-spawn)
+  - [Shadows of Evil Error](#shadows-of-evil-error)
+  - [Gorod Krovi Freeze](#gorod-krovi-freeze)
 - [Read Error Tracker](#read-error-tracker)
-- [GK Freeze Detailed](#gk-freeze-detailed)
+  - [How To Read Livesplit Error Tracker](#how-to-read-livesplit-error-tracker)
+- [GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)
 - [Darkness](#darkness)
+  - [Hibernate / Sleep PC (Suspending the game)](#hibernate--sleep-pc-suspending-the-game)
+  - [Darkness Video + Images](#darkness-video--images)
 - [25 Day Error Bypass](#25-day-error-bypass)
 - [Niche Knowledge](#niche-knowledge)
+  - [Instakill Drop Behavior](#instakill-drop-behavior)
+  - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
+  - [Spiders behavior on ZnS](#spiders-behavior-on-zns)
+  - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
+  - [Zombies Health behavior from round 112+](#zombies-health-behavior-from-round-112)
 - [Frozen Rounds](#frozen-rounds)
 
 ---
@@ -86,6 +108,7 @@ For the purpose of pausing your game overnight, there is no difference.
 
 ## [Strat Tester - Highlight & SPH](https://steamcommunity.com/sharedfiles/filedetails/?id=3715324145)
 https://steamcommunity.com/sharedfiles/filedetails/?id=3715324145
+
 Not the greatest strat tester, but it’s best we’ve got
 
 ## [Zombies Community patch](https://steamcommunity.com/sharedfiles/filedetails/?id=3003539961)
@@ -95,14 +118,49 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3003539961
 https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 
 ### *Aesthetic Mods*
-![](images/image17.jpg) ![](images/image5.png)[Ascendance](https://steamcommunity.com/sharedfiles/filedetails/?id=3652135484) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[DS4C](https://steamcommunity.com/sharedfiles/filedetails/?id=3566816837)
-By [oJumpy](https://steamcommunity.com/profiles/76561199211441639/myworkshopfiles?appid=311210) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; By [Death_Storm4](https://steamcommunity.com/id/Death_Storm44/myworkshopfiles?appid=311210)
+
+<br>
+
+<table align="center">
+  <tr>
+    <th width="280" align="center">Ascendance</th>
+    <th width="280" align="center">DS4C</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3652135484">
+        <img src="https://github.com/user-attachments/assets/d32f0b0f-4066-4ab1-b254-55facbc99a57" width="250"/>
+      </a>
+      <br><br>
+      By <a href="https://steamcommunity.com/profiles/76561199211441639/myworkshopfiles?appid=311210">oJumpy</a>
+    </td>
+    <td align="center">
+      <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3566816837">
+        <img src="https://github.com/user-attachments/assets/29cb6bd4-1c44-4474-bba7-0e6a884989ad" width="250"/>
+      </a>
+      <br><br>
+      By <a href="https://steamcommunity.com/id/Death_Storm44/myworkshopfiles?appid=311210">Death_Storm4</a>
+    </td>
+  </tr>
+</table>
+
+<br>
 
 ---
 
 # Errors
 
-### Rags Slams / Nade Swap / Nade Cancel Error:
+<h1 align="center">
+  <em><strong>
+    I could be wrong about some of this.<br>
+    Not everything here is 100% confirmed.<br>
+    Reach out if something is wrong.<br>
+    I’d love to have second opinions about any of this.<br>
+    Corrections and second opinions are very welcome.
+  </strong></em>
+</h1>
+
+## Rags Slams / Nade Swap / Nade Cancel Error:
 - **NOT** *the same as Grenade / Widows CI Error -*
 
 (Co-Op & Solo)
@@ -135,8 +193,10 @@ When you fully throw a grenade, the game finally triggers `grenade_fire`, and ev
   ![](images/image12.png)
 * [oJumpy’s Livesplit Script](https://github.com/oJumpy/Livesplit-AutoTimers-BOIII) with Child variable monitor
   Shows the Child value so you can track when to reset.
+  
+---
 
-### Throwable Equipment Error
+## Throwable Equipment Error
 - *This will **NOT** work for solo -*
 
 Only works for non-host players. If you’re off-host, you can throw equipment, but you must leave the game afterward to clear up threads.
@@ -174,7 +234,9 @@ The player that's throwing nades, can also use the livesplit tracker, to show ho
 ![](images/image3.png)
 So i suggest whenever you have thrown 2000 nades, leave and join back the game.
 
-### “Hitmarker” Freeze
+---
+
+## “Hitmarker” Freeze
 *This issue is **global**, meaning all players in the match contribute to the buildup.*
 *This is NOT to get confused with the Freeze that happens on Gorod Krovi, it’s unrelated.*
 
@@ -207,7 +269,9 @@ Because of this some smgs, can actually reach in the 160k hitmarkers
 * ICR-7 = **2** Hitmarkers
 * RK5 = **1** Hitmarker
 
-### Early Reset / G-Spawn
+---
+
+## Early Reset / G-Spawn
 *(Mostly an issue on ZnS, but it can happen on any map if you spawn kill ground spawners)*
 
 **ZnS Example:**
@@ -224,7 +288,9 @@ If you play the *Junction* Strategy and shoot directly at the ground spawner wit
 
 Using the Sword Slam **is safe.** It plays an animation first, so it doesn’t instantly kill the zombies spawning and doesn’t cause G-Spawn or Entity buildup. ![](images/image3.png)
 
-### Shadows of Evil Error
+---
+
+## Shadows of Evil Error
 #### - What Causes the Error
 This is what I believe is some **Animation Error,** if you shoot the Apothicon Servant **near the rail**, you’ll kill zombies while they’re in their **climb animation**, which causes the crash.
 
@@ -237,10 +303,17 @@ Doing this repeatedly for long periods (around **2 hours** of game time) builds 
   This has been tested and safe to do, there’s been multiple 255s doing this
 * If you're doing **single shots**, shoot nearly outside the ritual circle that’s in Junction (look pictures) Safe
 
-![](images/image20.png) ![](images/image15.png) ![](images/image2.png)
-![](images/image3.png)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/953a03dc-f14d-4493-b398-fd63b97021f8" width="490" />
+  <br>
+  <img src="https://github.com/user-attachments/assets/20991393-77e7-4648-969c-4edfa2e869a9" width="490" />
+  &nbsp;
+  <img src="https://github.com/user-attachments/assets/d5973acb-0c0c-4caa-9d56-f97a0ce9cd8e" width="490" />
+</p>
 
-### Gorod Krovi Freeze
+---
+
+# Gorod Krovi Freeze
 Gorod Krovi Error, is Child CSC based, which has an overflow of 65000, once that’s reached the game will freeze. It is still unknown what 100% is the root cause of it.
 
 #### - How to Avoid the Crash
@@ -294,7 +367,7 @@ As of **20/04/2026**
   * **The Arms/Plates Dynamic Entities:** When you shoot off a valk’s arm, faceplate (i believe camera too seems to be an entity that can fall, not too sure though), it falls to the ground as a dynamic physics entity `dynEnt`. The code is supposed to clean up this entity once the piece hits the floor, however, it only cleans up the piece if it falls **less** than 15 units (inches), which I believe is a typo. 
   Since valks hover further than that, meaning the script hits the `else` block, breaks the loop, just abandons those entities and these invisible dynamic entities stay active on the map forever.
 
-[15 Units btw…](https://github-production-user-asset-6210df.s3.amazonaws.com/87671800/588462207-ae3a66eb-f272-498d-b53d-1f4a26a789cd.png) This is why i wanna believe it was a typo
+[15 Units btw…](https://github-production-user-asset-6210df.s3.amazonaws.com/87671800/588462207-ae3a66eb-f272-498d-b53d-1f4a26a789cd.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260506%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260506T180621Z&X-Amz-Expires=300&X-Amz-Signature=e82f23cbb672fede52b1b65547957c95b3aba29bb41601370dae0c7f9c0aac40&X-Amz-SignedHeaders=host&response-content-type=image%2Fpng) This is why i wanna believe it was a typo
 
 So you can actually safely kill valks, with shield blast, but you have to be careful to avoid the two leaks mentioned above.
 
@@ -303,14 +376,6 @@ Kill valks as soon as they enter the bunker, while they are just hovering or mov
 If they start the “Charge” for the attack, you can still kill them within that window.
 If they start zapping, you **DO NOT** kill them, wait about a second or two, for any zap to finish.
 Killing manglers seems to actually be safe, they don’t seem to be leaking anything in CSC
-
-*I could be wrong about some of this.*
-*Not everything here is 100% confirmed.*
-*Reach out if something is wrong.*
-*I’d love to have second opinions about any of this.*
-*Corrections and second opinions are very welcome.*
-
----
 
 # Read Error Tracker
 
@@ -336,7 +401,7 @@ What each tracker shows:
 
 ---
 
-# GK Freeze Detailed
+## GK Freeze Detailed By Kxg124
 
 Things kxg avoids that he suggests all players do in order to ensure a 255 first try:
 - Only use deadwire and turned
@@ -489,11 +554,15 @@ It's probably possible to wait until the timer is close to the limit before doin
 
 # Niche Knowledge
 
-*I could be wrong about some of this.*
-*Not everything here is 100% confirmed.*
-*Reach out if something is wrong.*
-*I’d love to have second opinions about any of this.*
-*Corrections and second opinions are very welcome.*
+<h1 align="center">
+  <em><strong>
+    I could be wrong about some of this.<br>
+    Not everything here is 100% confirmed.<br>
+    Reach out if something is wrong.<br>
+    I’d love to have second opinions about any of this.<br>
+    Corrections and second opinions are very welcome.
+  </strong></em>
+</h1>
 
 ### Instakill Drop Behavior
 #### - What Happens
@@ -520,6 +589,8 @@ Why this is weird: Gorod Krovi has Challenges, free perk bottles and perk slots,
 **The Giant** idk
 **ZnS** and **Revelations** registers permanent zombie death callbacks that never get deregistered
 **Shangri-La** seems to be constantly monitoring for drops, so something happens there?
+
+---
 
 ### Bugs/Parasites Behavior on Shadows of Evil
 #### - What Happens
@@ -603,6 +674,8 @@ I used “districts” as an example to make it easier to understand. but this i
 3. The game teleports the Wasp to your position (in another district *Junction*), but it still wants to finish its flight to the **old** district.
 4. Wasp flies away, hits its "ghost" goal, then finally comes back to fight you.
 
+---
+
 ### Spiders behavior on ZnS
 1 - When you shoot a spider, it visually dies immediately and grants you +50 points. However, the spider entity itself stays alive for a full 10 seconds.
 
@@ -660,6 +733,8 @@ function waiting_for_next_spider_spawn()
 Because the `round_spawn` thread is actively processing this spider spawn, this “`wait n_default_wait;`” blocks the main `round_spawning`. Because the game calls the spider spawn logic as a direct function rather than starting it on a separate thread, `round_spawning` must wait for this `waiting_for_next_spider_spawn` function to finish before it can try to spawn the next zombie.
 
 This issue is present on **Shadows of Evil** for meatballs and **Gorod Krovi** for Valks and Manglers
+
+---
 
 ### Der Eisendrache dogs health behavior
 On Der Eisendrache there’s a bug where if you use the **Teleporter** or **Wundersphere** to go to Rocket or viceversa, causing the dogs to de-spawn and re-spawn multiple times during the 2nd ever dog round of the game, the dog’s health will be permanently locked to the 2nd dog round health for the rest of the game. `level.dog_health = 900;`
@@ -720,6 +795,8 @@ function dog_health_increase()
 
 Because there is no “else” statement at the end. If level.dog_round_count is 5 or higher, none of these conditions are met, and the function finishes without doing anything, which is what happens in `function_1aaa22b5` when you teleport 2 or 3 dogs get killed from that function, because it does “`level.dog_round_count++;`” and you are on a second dog round the counter will go higher than 4, the health function `dog_health_increase` simply stops updating on all future dog rounds, The `level.dog_health` variable stays permanently locked at 900
 
+---
+
 ### Zombies Health behavior from round 112+
 
 ---
@@ -730,26 +807,24 @@ Because there is no “else” statement at the end. If level.dog_round_count is
 Things like Fireworks, Turned (explosion effect), Thunder Wall, Flogger, Ice Staff
 
 These are the rounds where **Universal** things will **NOT** kill zombies properly:
-
-**121, 123, 127, 129, 133, 135, 140, 141, 143, 150, 152, 153, 154, 162+**
+> # **121, 123, 127, 129, 133, 135, 140, 141, 143, 150, 152, 153, 154, 162+**
 
 ### Shadows of Evil - Unupgraded Sword
 
 Rounds where the **Unupgraded Sword** kills zombies properly, with just **ONE** slam:
-**1-126, 128, 130-132, 134-139, 142, 144-149, 151, 155-161**
+> # **1-126, 128, 130-132, 134-139, 142, 144-149, 151, 155-161**
 
 Rounds Where the **Unupgraded Sword** does NOT kill zombies with just **ONE** slam, makes zombies one shot:
-
-**127, 129, 133, 140, 141, 143, 150, 152-154, 162+**
+> # **127, 129, 133, 140, 141, 143, 150, 152-154, 162+**
 
 ### Der Eisendrache - Bows
 
 Rounds where the **Bows** kills zombies properly:
 
 **Lightning Bow:**
-**1-112, 116-121, 123, 126, 127, 131, 135, 137-139, 141, 143, 152, 154, 162+**
+> # **1-112, 116-121, 123, 126, 127, 131, 135, 137-139, 141, 143, 152, 154, 162+**
 
 **Fire Bow:**
-**1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-162**
+> # **1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-162**
 
 **Shangri-La, Moon health of special enemies**
