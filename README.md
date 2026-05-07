@@ -1,7 +1,12 @@
 # BO3 Zombies Infos for High Rounders
 
-### [Main Document<img width="112" height="112" alt="Google Doc" src="https://github.com/user-attachments/assets/03ca05a4-c1e1-4f19-b5ac-4e21b8514435" />](https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w)
+<p align="center">
+  <a href="https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w"><img src="https://img.shields.io/badge/Google%20Docs-Main%20Document-grey?style=for-the-badge&logo=googledocs&logoColor=white&labelColor=4285F4" alt="Main Document"></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
+</p>
 
+<br>
 
 ## Contents
 **[Sleep / Hibernate](#sleep--hibernate)**
