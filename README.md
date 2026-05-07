@@ -86,12 +86,19 @@ Once your game is paused, open the console (`~` key) and enter:
 
 This reduces system load while the game is suspended.
 
-![](images/image7.png) ![](images/image10.png) ![](images/image21.png)
-![](images/image13.png)
-![](images/image19.png)
-![](images/image18.png)
+![](https://github.com/user-attachments/assets/dc26d8d2-b58e-42fb-b35b-74cdea2e361e) 
+![](https://github.com/user-attachments/assets/d6c0fefa-c1a2-4f06-852d-8160cf9fe6e7)
 
-#### Testing & Choosing What Works FOR YOU
+![](https://github.com/user-attachments/assets/7a1d39b3-45de-4515-912b-1cf814cf8180) 
+
+![](https://github.com/user-attachments/assets/7f126f70-3302-4241-a7d1-c2a4878ac927)
+
+![](https://github.com/user-attachments/assets/e1712922-317b-4f46-874f-cb53319871cc)
+![](https://github.com/user-attachments/assets/54cca9bc-8709-4b0e-bb03-a252d9963092)
+
+#
+
+### Testing & Choosing What Works FOR YOU
 **Important**: One method will reliably work for your system, but you need to test to determine which one.
 
 1. **Test on Round 1**
