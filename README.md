@@ -171,6 +171,34 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 
 ---
 
+# Frozen Rounds
+
+### **Universal**
+Things like Fireworks, Turned (explosion effect), Thunder Wall, Flogger, Ice Staff
+
+These are the rounds where **Universal** things will **NOT** kill zombies properly:
+> ## **121, 123, 127, 129, 133, 135, 140, 141, 143, 150, 152, 153, 154, 162+**
+
+### Shadows of Evil - Unupgraded Sword
+
+Rounds where the **Unupgraded Sword** kills zombies properly, with just **ONE** slam:
+> ## **1-126, 128, 130-132, 134-139, 142, 144-149, 151, 155-161**
+
+Rounds Where the **Unupgraded Sword** does NOT kill zombies with just **ONE** slam, makes zombies one shot:
+> ## **127, 129, 133, 140, 141, 143, 150, 152-154, 162+**
+
+### Der Eisendrache - Bows
+
+Rounds where the **Bows** kills zombies properly:
+
+**Lightning Bow:**
+> ## **1-112, 116-121, 123, 126, 127, 131, 135, 137-139, 141, 143, 152, 154, 162+**
+
+**Fire Bow:**
+> ## **1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-162**
+
+---
+
 # Errors
 
 <h1 align="center">
@@ -836,34 +864,7 @@ Because there is no “else” statement at the end. If level.dog_round_count is
 
 ---
 
-### Zombies Health behavior from round 112+
+### Zombies Health behavior from round 112+ // TODO
 
 ---
 
-# Frozen Rounds
-
-### **Universal**
-Things like Fireworks, Turned (explosion effect), Thunder Wall, Flogger, Ice Staff
-
-These are the rounds where **Universal** things will **NOT** kill zombies properly:
-> ## **121, 123, 127, 129, 133, 135, 140, 141, 143, 150, 152, 153, 154, 162+**
-
-### Shadows of Evil - Unupgraded Sword
-
-Rounds where the **Unupgraded Sword** kills zombies properly, with just **ONE** slam:
-> ## **1-126, 128, 130-132, 134-139, 142, 144-149, 151, 155-161**
-
-Rounds Where the **Unupgraded Sword** does NOT kill zombies with just **ONE** slam, makes zombies one shot:
-> ## **127, 129, 133, 140, 141, 143, 150, 152-154, 162+**
-
-### Der Eisendrache - Bows
-
-Rounds where the **Bows** kills zombies properly:
-
-**Lightning Bow:**
-> ## **1-112, 116-121, 123, 126, 127, 131, 135, 137-139, 141, 143, 152, 154, 162+**
-
-**Fire Bow:**
-> ## **1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-162**
-
-**Shangri-La, Moon health of special enemies**
