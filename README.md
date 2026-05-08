@@ -6,8 +6,6 @@
   <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
 </p>
 
-<br>
-
 ## Contents
 **[Sleep / Hibernate](#sleep--hibernate)**
   - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
@@ -140,9 +138,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3003539961
 ## [Zombies Community patch 4Modderz](https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538)
 https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 
-### *Aesthetic Mods*
-
-<br>
+<h3 align="center"><em>Aesthetic Mods</em></h3>
 
 <table align="center">
   <tr>
