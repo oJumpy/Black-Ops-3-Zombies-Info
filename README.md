@@ -1,4 +1,4 @@
-# BO3 Zombies Infos for High Rounders
+<h1 align="center">BO3 Zombies Infos for High Rounders</h1>
 
 <p align="center">
   <a href="https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w"><img src="https://img.shields.io/badge/Google%20Docs-Main%20Document-grey?style=for-the-badge&logo=googledocs&logoColor=white&labelColor=4285F4" alt="Main Document"></a>
@@ -16,7 +16,7 @@
   - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
   - [Aesthetic Mods](#aesthetic-mods)
 ---
-**[Torso/Invisibles Rounds](#frozen-rounds)**
+**[Frozen/Torso/Invisibles Zombies Rounds](#frozen-rounds)**
 
 ---
 **[Errors](#errors)**
