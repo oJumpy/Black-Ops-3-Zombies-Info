@@ -103,7 +103,7 @@ This reduces system load while the game is suspended.
 
 #
 
-### Testing & Choosing What Works FOR YOU
+### Testing & Choosing What Works **FOR YOU**
 **Important**: One method will reliably work for your system, but you need to test to determine which one.
 
 1. **Test on Round 1**
@@ -512,18 +512,19 @@ Under **Options** and select Darkness ![](images/image3.png)
 *Video Showcase:*[https://www.youtube.com/watch?v=4GL_2VAVZUY](https://www.youtube.com/watch?v=4GL_2VAVZUY)
 
 Darkness occurs **only** in these maps / levels:
-Shadows of Evil -  Most of Waterfront area
-The Giant - At Power Switch / Bowie Knife area (Only when power is on)
-Der Eisendrache - At Rocket Launch area, only happens when you take the Wundersphere 
-Zetsubou no Shima - Most of the entirety of Lab B
-Gorod Krovi - At Hatchery where Pack-A-Punch is located
-Revelations - It occurs mostly everywhere on the map, thankfully there’s workarounds for it
-Origins – At Gen 6 and Crazy Place
+- Shadows of Evil -  Most of Waterfront area
+- The Giant - At Power Switch / Bowie Knife area (Only when power is on)
+- Der Eisendrache - At Rocket Launch area, only happens when you take the Wundersphere 
+- Zetsubou no Shima - Most of the entirety of Lab B
+- Gorod Krovi - At Hatchery where Pack-A-Punch is located
+- Revelations - It occurs mostly everywhere on the map, thankfully there’s workarounds for it
+- Origins – At Gen 6 and Crazy Place
 
 There’s Workarounds to Not get Darkness on DE, ZnS and Revelations
 
-DE - Instead of taking **Wundersphere**, you just **Teleport** to the Rocket Launch Area.[ZnS - Walk off the cliff go for ICR - Vesper ammo run first then M8 and Shield.](https://discord.com/channels/@me/530347473126948882/1445297752736268469)
-Revelations - Take the teleporter from Verruckt to Spawn, then run back to Verruckt.
+- DE - Instead of taking **Wundersphere**, you just **Teleport** to the Rocket Launch Area.
+- [ZnS - Walk off the cliff go for ICR - Vesper ammo run first then M8 and Shield.](https://discord.com/channels/@me/530347473126948882/1445297752736268469)
+- Revelations - Take the teleporter from Verruckt to Spawn, then run back to Verruckt.
 
 *Shadows of Evil - Most of Waterfront Area (No Workarounds)*
 <p align="center">
@@ -624,9 +625,9 @@ All four affected maps have side quests that reward players with "free perk bott
 Why this is weird: Gorod Krovi has Challenges, free perk bottles and perk slots, yet Instakill works fine there. Origins has free perk slots (digs) like ZnS, yet Instakill works fine there too.
 
 #### - Why does it happen?
-**The Giant** idk
-**ZnS** and **Revelations** registers permanent zombie death callbacks that never get deregistered
-**Shangri-La** seems to be constantly monitoring for drops, so something happens there?
+- **The Giant** idk
+- **ZnS** and **Revelations** registers permanent zombie death callbacks that never get deregistered
+- **Shangri-La** seems to be constantly monitoring for drops, so something happens there?
 
 ---
 
