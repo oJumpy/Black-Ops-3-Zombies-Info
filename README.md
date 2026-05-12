@@ -187,7 +187,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 * **Player Cooldown:** 20 seconds.
 * **Global/Coop Cooldown:** 10 seconds.
 * **Radius:** Targets zombies within a 600 unit radius (50 feet / 15 meters).
-* The summoned weapon physically spawns 56 units above the zombie, fires 10 bullets over 10 frames, and runs up to 3 Line of Sight (LOS) which, checks per zombie to make sure they aren't behind walls.
+* The summoned weapon physically spawns 56 units above the zombie, fires 10 bullets over 10 frames, and runs up to 3 Line of Sight (LOS) checks per zombie to make sure they aren't behind walls.
 
 ```gsh
 #define ZM_AAT_FIRE_WORKS_MAX_LOS_CHECKS			3
@@ -229,7 +229,6 @@ function zm_aat_fire_works_get_target()
 	return undefined;
 }
 ```
-
 
 **Turned**
 * **Activation Chance:** 15% per bullet.
