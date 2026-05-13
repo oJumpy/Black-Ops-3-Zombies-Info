@@ -189,47 +189,6 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 * **Radius:** Targets zombies within a 600 unit radius (50 feet / 15 meters).
 * The summoned weapon physically spawns 56 units above the zombie, fires 10 bullets over 10 frames, and runs up to 3 Line of Sight (LOS) checks per zombie to make sure they aren't behind walls.
 
-```gsh
-#define ZM_AAT_FIRE_WORKS_MAX_LOS_CHECKS			3
-#define ZM_AAT_FIRE_WORKS_FIRING_NUM_FRAMES			10
-#define ZM_AAT_FIRE_WORKS_ZOMBIE_GUN_HEIGHT			(0, 0, 56)
-```
-
-```gsc
-// Death callback for zombies killed by summoned Fire Works weapon
-function zm_aat_fire_works_get_target()
-{
-	a_ai_zombies = array::randomize( GetAiTeamArray( "axis" ) );
-
-	los_checks = 0;
-	for ( i = 0; i < a_ai_zombies.size; i++ )
-	{
-		zombie = a_ai_zombies[i];
-		test_origin = zombie getcentroid();
-		if ( DistanceSquared( self.origin, test_origin ) > ZM_AAT_FIRE_WORKS_RANGE_SQ )
-		{
-			continue;
-		}
-
-		if ( los_checks < ZM_AAT_FIRE_WORKS_MAX_LOS_CHECKS && !zombie DamageConeTrace( self.origin ) )
-		{
-			los_checks++;
-			continue;
-		}
-
-		return zombie;
-	}
-
-	if ( a_ai_zombies.size )
-	{
-		// just return the first one, so that we at least change direction
-		return a_ai_zombies[0];
-	}
-
-	return undefined;
-}
-```
-
 **Turned**
 * **Activation Chance:** 15% per bullet.
 * **Player Cooldown:** 15 seconds.
@@ -251,24 +210,6 @@ function zm_aat_fire_works_get_target()
 * **Kill Limit:** Flings/kills a maximum of 6 zombies.
 * **Radius:** 180 unit range (15 feet).
 * Thunder Wall uses `VectorDot` (dot products) to calculate the player's viewing angle. Because the shockwave travels away from the player, it only flings zombies standing **behind** the initial target you shot. Any zombies standing in front of the target (closer to you) will be completely ignored by the blast. They must be within the 180 unit forward cone.
-
-in `_zm_aat_thunder_wall.gsc`:
-``` gsc
-// Get current zombie's data
-			v_curr_zombie_origin = a_ai_zombies[i] GetCentroid();
-			v_curr_zombie_origin_sq = DistanceSquared( v_thunder_wall_blast_pos, v_curr_zombie_origin );
-			v_curr_zombie_to_thunder_wall = VectorNormalize( v_curr_zombie_origin - v_thunder_wall_blast_pos );
-			
-			// [CUSTOM COMMENT] VectorDot compares the player's aiming direction with the location of the nearby zombie.
-			v_curr_zombie_facing_dot = VectorDot( v_attacker_facing, v_curr_zombie_to_thunder_wall );
-	
-			// If the current zombie is in front of the zombie hit by Thunder Wall, is unaffected
-			if ( v_curr_zombie_facing_dot < 0 )
-			{
-				// [CUSTOM COMMENT] A result less than 0 means the zombie is closer to the player than the target. The "continue" command tells the code to skip this zombie entirely.
-				continue;
-			}
-```
 
 ---
 
