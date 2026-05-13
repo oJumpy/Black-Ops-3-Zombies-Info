@@ -37,19 +37,17 @@
 **[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
 
 ---
-**[Darkness](#darkness)**
-  - [Hibernate / Sleep PC (Suspending the game)](#hibernate--sleep-pc-suspending-the-game)
-  - [Darkness Video + Images](#darkness-video--images)
----
 **[25 Day Error Bypass](#25-day-error-bypass)**
 
 ---
 **[Niche Knowledge](#niche-knowledge)**
+  - [Darkness](#darkness)
+  -  - [Darkness Video + Images](#darkness-video--images)
   - [Instakill Drop Behavior](#instakill-drop-behavior)
   - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   - [Spiders behavior on ZnS](#spiders-behavior-on-zns)
   - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
-  - [Zombies Health behavior from round 112+](#zombies-health-behavior-from-round-112)
+  - [Zombies Health behavior from round 112+](#zombies-health-behavior-from-round-112--todo)
 
 ---
 
@@ -529,8 +527,6 @@ Valk counter was largely accurate, but not 100%. Small things such as going to p
 
 The number on the far left is constantly fluctuating. This is the tracker trying to read the most current value for the given variable. The next number (ie: Max: 103943) displays what the tracker has read as the **HIGHEST** value for said variable. The tracker does not update with the highest value instantaneously after doing an action that could directly increase the variable, but it will update frequently enough to show overall progression. What this means is that if you suddenly see the variable spike, it does not mean the action you did in that moment is the direct reason for the variable value increasing. For example, you could be blasting valks for over an hour with the tracker not updating with a new highest value having been read. However, you could be standing still waiting for zombies to get to you and suddenly see the tracker display a new highest variable value being read after said hour. This does NOT mean that you should look at the last 5 seconds of gameplay to see what made the value spike, but rather look at the larger picture of actions taken that could be problematic. 
 
-_____
-
 Testing is still inconclusive to give a 100% definitive answer, however all signs point towards valks being the MAIN contributing factor to avoid interacting with at all cost. This means that when playing, players should avoid damaging and killing valks carelessly. In the countless GK games kxg has played, all of the games that froze early ended because of this. 
 
 In kxg’s classics 255 played at the end of 2020, he went out of his way to play as safe as possible to avoid valks dying. This meant that for the entire game the shield was pointed at the floor in order to control the shield blast to only kill what was directly surrounding the player. Accidental valk kills did still happen, and the player is forced to kill whatever valks are on the map at the end of the round in order to progress. Playing this way is the EXTREME safe way to avoid killing valks as much as possible. (It is also slow, boring as **FUCK**, and means the player cares more about the valk’s lives than their own.) kxg did still make a decent size turned army on 159, and killing valks every now and then to keep the army alive was required. This game was the first EVER to get past 228 in solo, (after kxg getting several 220+ games, and shelby having a 226 and 228 freeze,) with the expectation that this theory of avoiding valk kills would at most avoid freeze until the late 230s/early 240s.kxg was very surprised when he instead got 255 no freeze.
@@ -541,7 +537,60 @@ In the time since kxg’s no gum 255 there have been only 2 more 255s. The first
 
 ---
 
-# Darkness
+# 25 Day Error Bypass
+
+*This method **freezes the timer** during hibernation, it does NOT reset it.*
+
+#### How does it work?
+* When you hibernate with the correct steps, the frame timer stops counting
+* When you wake the PC and continue playing, the timer **resumes** from where it paused
+* The timer does NOT reset back to zero, it only pauses during hibernation
+
+#### When to do it?
+You need to use this **every time you hibernate**, not just when the timer is close to expiring.
+
+#### How to do it:
+1. Before hibernating:
+   * Turn **automatic time** **OFF** in Windows settings
+2. **Hibernate your PC**
+3. When restarting from hibernation:
+   * Enter BIOS immediately
+   * Change the date **back one month**
+   * Save and exit BIOS
+4. When Windows boots:
+   * Your frame timer should still be at the pre-hibernation time
+   * Turn **automatic time** back **ON**
+   * If time doesn't correct itself, **manually set** the correct date/time
+5. **Repeat this process** every time you need to bypass the 25 day limit
+
+If you Sleep instead, you can do this in order to still bypass the error:
+
+1. To access BIOS after sleep:
+   * Flip the **PSU switch** **OFF**
+   * Wait till you are ready to play again
+   * Flip PSU switch back **ON**
+   * You'll now get BIOS prompt on boot
+2. **Enter BIOS** and follow same date-change steps as above
+3. **Repeat** as needed
+
+Note
+It's probably possible to wait until the timer is close to the limit before doing this, but how reliable that is hasn't been fully tested. Playing it safe by doing it every session is the recommended approach.
+
+---
+
+# Niche Knowledge
+
+<h1 align="center">
+  <em><strong>
+    I could be wrong about some of this.<br>
+    Not everything here is 100% confirmed.<br>
+    Reach out if something is wrong.<br>
+    I’d love to have second opinions about any of this.<br>
+    Corrections and second opinions are very welcome.
+  </strong></em>
+</h1>
+
+### Darkness
 
 *This is how fast you will reach Darkness in BO3, since it’s dependent on your FPS, even while the game is paused.*
 *Darkness does NOT occur on every map / level and it’s also zone / area dependent*
@@ -617,61 +666,6 @@ There’s Workarounds to Not get Darkness on DE, ZnS and Revelations
 </p>
 
 ![](images/image3.png)
-
----
-
-# 25 Day Error Bypass
-
-*This method **freezes the timer** during hibernation, it does NOT reset it.*
-
-#### How does it work?
-* When you hibernate with the correct steps, the frame timer stops counting
-* When you wake the PC and continue playing, the timer **resumes** from where it paused
-* The timer does NOT reset back to zero, it only pauses during hibernation
-
-#### When to do it?
-You need to use this **every time you hibernate**, not just when the timer is close to expiring.
-
-#### How to do it:
-1. Before hibernating:
-   * Turn **automatic time** **OFF** in Windows settings
-2. **Hibernate your PC**
-3. When restarting from hibernation:
-   * Enter BIOS immediately
-   * Change the date **back one month**
-   * Save and exit BIOS
-4. When Windows boots:
-   * Your frame timer should still be at the pre-hibernation time
-   * Turn **automatic time** back **ON**
-   * If time doesn't correct itself, **manually set** the correct date/time
-5. **Repeat this process** every time you need to bypass the 25 day limit
-
-If you Sleep instead, you can do this in order to still bypass the error:
-
-1. To access BIOS after sleep:
-   * Flip the **PSU switch** **OFF**
-   * Wait till you are ready to play again
-   * Flip PSU switch back **ON**
-   * You'll now get BIOS prompt on boot
-2. **Enter BIOS** and follow same date-change steps as above
-3. **Repeat** as needed
-
-Note
-It's probably possible to wait until the timer is close to the limit before doing this, but how reliable that is hasn't been fully tested. Playing it safe by doing it every session is the recommended approach.
-
----
-
-# Niche Knowledge
-
-<h1 align="center">
-  <em><strong>
-    I could be wrong about some of this.<br>
-    Not everything here is 100% confirmed.<br>
-    Reach out if something is wrong.<br>
-    I’d love to have second opinions about any of this.<br>
-    Corrections and second opinions are very welcome.
-  </strong></em>
-</h1>
 
 ### Instakill Drop Behavior
 #### - What Happens
