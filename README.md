@@ -45,7 +45,7 @@
   -  - [Darkness Video + Images](#darkness-video--images)
   - [Instakill Drop Behavior](#instakill-drop-behavior)
   - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
-  - [Spiders behavior on ZnS](#spiders-behavior-on-zns)
+  - [Special Enemies Spawn Delay](#special-enemies-delay)
   - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
   - [Zombies Health behavior from round 112+](#zombies-health-behavior-from-round-112--todo)
 
@@ -779,30 +779,29 @@ I used “districts” as an example to make it easier to understand. but this i
 
 ---
 
-### Spiders behavior on ZnS
-1 - When you shoot a spider, it visually dies immediately and grants you +50 points. However, the spider entity itself stays alive for a full 10 seconds.
+## Special Enemies Delay
 
-Their death state is handled in `_spider.gsc`, in `state_death_update` function:
-`_spider.gsc`:
+### SoE, ZnS and GK
+- When a special enemy is ready to spawn, the game triggers their specific spawn function. Because the game calls this spawn logic as a direct function rather than starting it on a separate thread, the main `round_spawning` loop must wait for this function to finish before it can try to spawn the next zombie.
+This issue is present with **Meatballs**, **Valkyries**, and **Manglers**. At the end of their spawn loops, they all share the exact same scaling wait time snippet, where `case 1`, `case 2`, etc., correspond to the number of players currently in the game:
+`_zm_ai_raps.gsc`, `_zm_ai_sentinel_drone.gsc`, and `_zm_ai_raz.gsc`:
 ```gsc
-// ----------------------------------------------
-// State: death
-// ----------------------------------------------
-function state_death_update( params )
+function waiting_for_next_spawn()
 {
-    self endon( "death" );
-
-    self ASMRequestSubstate( "death@stationary" );
-    vehicle_ai::waittill_asm_complete( "death@stationary", 2 );
-
-    self vehicle_death::death_fx();
-
-    vehicle_death::DeleteWhenSafe( 10 );
+    switch(level.players.size)
+    {
+        case 1: n_default_wait = 2.25; break;
+        case 2: n_default_wait = 1.75; break;
+        case 3: n_default_wait = 1.25; break;
+        default: n_default_wait = 0.75; break;
+    }
+    wait n_default_wait;
 }
 ```
+This means every time one of these enemies spawns, the entire spawner halts for **2.25 seconds on Solo**, scaling down to **0.75 seconds in a 4-player game**.
 
-2 - When a spider is ready to spawn, it triggers `special_spider_spawn` in `_zm_ai_spiders.gsc` and at the end of the loop, it calls `waiting_for_next_spider_spawn`
-
+**Zetsubou No Shima (Spiders)** uses the same blocking structure, but with slightly worse scaling for co-op:
+- When a spider is ready to spawn, it triggers `special_spider_spawn` in `_zm_ai_spiders.gsc` and at the end of the loop, it calls `waiting_for_next_spider_spawn`
 ```gsc
 function waiting_for_next_spider_spawn()
 {
@@ -832,10 +831,67 @@ function waiting_for_next_spider_spawn()
     wait n_default_wait;
 }
 ```
-
 Because the `round_spawn` thread is actively processing this spider spawn, this “`wait n_default_wait;`” blocks the main `round_spawning`. Because the game calls the spider spawn logic as a direct function rather than starting it on a separate thread, `round_spawning` must wait for this `waiting_for_next_spider_spawn` function to finish before it can try to spawn the next zombie.
 
-This issue is present on **Shadows of Evil** for meatballs and **Gorod Krovi** for Valks and Manglers
+### Extra Spiders Delay on ZnS
+- When you shoot a spider and kill, it visually dies immediately and grants you +50 points. However, the spider entity itself stays alive for a full 10 seconds.
+
+Their death state is handled in `_spider.gsc`, in `state_death_update` function:
+`_spider.gsc`:
+```gsc
+// ----------------------------------------------
+// State: death
+// ----------------------------------------------
+function state_death_update( params )
+{
+    self endon( "death" );
+
+    self ASMRequestSubstate( "death@stationary" );
+    vehicle_ai::waittill_asm_complete( "death@stationary", 2 );
+
+    self vehicle_death::death_fx();
+
+    vehicle_death::DeleteWhenSafe( 10 );
+}
+```
+
+### Revelations Furies and Keepers Delay
+- While on previous levels mentioned their delay depends on the number of players in the level, in Revelations it's hardcoded and does not scale down with player count at all.
+During normal rounds, the game checks if it should replace a normal zombie spawn with a special enemy via `function_fd8b24f5()` inside `zm_genesis_ai_spawning.gsc`. Because this isn't threaded, it blocks the entire spawner:
+* **Keepers (1.3 Second Delay):** 
+When a Keeper spawns, the game calls `function_f55d851b()`. Inside this function, there is a hardcoded `wait(1.3);` before the AI is fully initialized and returns control to the spawner:
+```gsc
+function function_f55d851b()
+{
+    // ... Keeper spawn logic ...
+    level thread function_6cc52664(var_d88e6f5f.origin); // Portal FX
+    
+    wait(1.3); // Blocks the main spawn thread
+    
+    var_d88e6f5f.zombie_think_done = 1;
+    // ...
+    return var_d88e6f5f;
+}
+```
+
+* **Apothicon Furies (2.5 Second Delay):** 
+Furies are by far the worst. When a Fury spawns, the game calls `function_21bbe70d()`, which then triggers the `apothicon_fury_spawn_meteor` drop animation `function_1f0a0b52(v_origin)`. The `apothicon_fury_spawn_meteor` drop utilizes a `waittill("movedone")` which takes 1.5 seconds. After it lands, the original script waits *another* 1 second:
+```gsc
+// Inside function_1f0a0b52() - Handles the meteor drop
+var_3dd66385 moveto(v_spawn_pos, 1.5);
+var_3dd66385 waittill(#"movedone"); // Blocks for 1.5 Seconds
+
+// Back inside function_21bbe70d() - Handles the Fury spawn
+var_ecb2c615 = zm_genesis_apothicon_fury::function_21bbe70d(v_origin, v_angles, 0);
+if(isdefined(var_ecb2c615))
+{
+    // ...
+    wait(1); // Blocks for another 1.0 Second
+    var_ecb2c615.zombie_think_done = 1;
+    return var_ecb2c615;
+}
+```
+This means every single time an Apothicon Fury spawns during a normal round, the entire zombie spawn loop halts for a massive **2.5 seconds**, regardless of how many players are in the game.
 
 ---
 
@@ -900,7 +956,7 @@ Because there is no “else” statement at the end. If level.dog_round_count is
 
 ---
 
-## TODO
+# TODO
 
 Zombies Health behavior from round 112+ // TODO
 
