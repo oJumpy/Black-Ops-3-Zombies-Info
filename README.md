@@ -963,6 +963,7 @@ Zombies Health behavior from round 112+ // TODO
 function randomize // TODO
 
 Trap Immunity / Panzer Flame Glitch // TODO
+
 When you go under a panzer as it spawns, NOT instantly you have to wait about half a second, you will get flamed by his jetpack and that will grant you with trap immunity, for the entirety of the game
 
 Turned Army // TODO
@@ -974,6 +975,7 @@ Gondola odds Der Eisendrache // TODO
 Pods odds Shadows of Evil // TODO
 
 Napalm Freeze // TODO
+
 If you instantly kill the napalm while it spawns, the game will freeze.
 
 You have to be careful using:
@@ -981,10 +983,13 @@ You have to be careful using:
 the explosion from a nearby Shrieker/Sonic Zombie.
 
 Strange Spiders behaviour // TODO
+
 Spider won't move after it spawns, and after a half a second to a second it just teleports, somewhere random in the room, and sometimes upside down, sideways or normal but stuck in the ground, and it won't move, after this teleport For a few minutes it seems that it teleports to the same location 
 
 
 Furies and Keeper not spawning when players stand in certain locations // TODO
+
+Shang PAP causing random CI's very inconsistent, need to look what could cause it // TODO
 
 ---
 
