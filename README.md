@@ -18,6 +18,7 @@
 
 ---
 **[AATs (Alternate Ammo Types)](#aats-alternate-ammo-types)**
+  - [Lucky Crit](#lucky-crit)
 
 ---
 **[Frozen/Torso/Invisibles Zombies Rounds](#frozen-rounds)**
@@ -47,7 +48,7 @@
   - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   - [Special Enemies Spawn Delay](#special-enemies-delay)
   - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
-  - [Zombies Health behavior from round 112+](#zombies-health-behavior-from-round-112--todo)
+  - [TODO](#todo)
 
 ---
 
@@ -208,6 +209,18 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 * **Kill Limit:** Flings/kills a maximum of 6 zombies.
 * **Radius:** 180 unit range (15 feet).
 * Thunder Wall uses `VectorDot` (dot products) to calculate the player's viewing angle. Because the shockwave travels away from the player, it only flings zombies standing **behind** the initial target you shot. Any zombies standing in front of the target (closer to you) will be completely ignored by the blast. They must be within the 180 unit forward cone.
+
+### Lucky Crit
+Lucky Crit gives you **2 additional chances** for an AAT to activate on a single bullet.<br>
+So you get **3 chances per bullet** to proc an AAT.<br>
+It does **NOT** bypass, reduce or ignore the AATs cooldowns.
+
+**New Activation Chance with Lucky Crit**
+- **Dead Wire:** 20% --> ~48%
+- **Fire Works:** 10% --> ~27%
+- **Turned:** 15% --> ~38%
+- **Blast Furnace:** 15% --> ~38%
+- **Thunder Wall:** 25% --> 57%
 
 ---
 
