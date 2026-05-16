@@ -408,11 +408,11 @@ Doing this repeatedly for long periods (around **2 hours** of game time) builds 
 * If you're doing **single shots**, shoot nearly outside the ritual circle that’s in Junction (look pictures) Safe
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/953a03dc-f14d-4493-b398-fd63b97021f8" width="430" />
+  <img src="https://github.com/user-attachments/assets/953a03dc-f14d-4493-b398-fd63b97021f8" width="400" />
   <br>
-  <img src="https://github.com/user-attachments/assets/20991393-77e7-4648-969c-4edfa2e869a9" width="430" />
+  <img src="https://github.com/user-attachments/assets/20991393-77e7-4648-969c-4edfa2e869a9" width="400" />
   &nbsp;
-  <img src="https://github.com/user-attachments/assets/d5973acb-0c0c-4caa-9d56-f97a0ce9cd8e" width="430" />
+  <img src="https://github.com/user-attachments/assets/d5973acb-0c0c-4caa-9d56-f97a0ce9cd8e" width="400" />
 </p>
 
 ---
@@ -660,22 +660,22 @@ There’s Workarounds to Not get Darkness on DE, ZnS and Revelations
 
 *Shadows of Evil - Most of Waterfront Area (No Workarounds)*
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/9b9f2435-b5e5-48c3-9271-eedb226e6220" width="430" />
+  <img src="https://github.com/user-attachments/assets/9b9f2435-b5e5-48c3-9271-eedb226e6220" width="400" />
   &nbsp;
-  <img src="https://github.com/user-attachments/assets/fdede43c-801b-4479-914c-384d7e866cde" width="430" />
+  <img src="https://github.com/user-attachments/assets/fdede43c-801b-4479-914c-384d7e866cde" width="400" />
 </p>
 
 *Origins - Gen 6 and Crazy Place (No Workarounds)*
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/1315e4a8-172d-49ca-8213-c7f624d99a64" width="430" />
+  <img src="https://github.com/user-attachments/assets/1315e4a8-172d-49ca-8213-c7f624d99a64" width="400" />
   &nbsp;
-  <img src="https://github.com/user-attachments/assets/a8c12c95-5ede-4a2e-8101-43f362fe61bf" width="430" />
+  <img src="https://github.com/user-attachments/assets/a8c12c95-5ede-4a2e-8101-43f362fe61bf" width="400" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0d8064cc-0761-4a99-a24a-67bfc225e090" width="430" />
+  <img src="https://github.com/user-attachments/assets/0d8064cc-0761-4a99-a24a-67bfc225e090" width="400" />
   &nbsp;
-  <img src="https://github.com/user-attachments/assets/63ac3a71-6ce8-46ef-967f-fd53fd23a757" width="430" />
+  <img src="https://github.com/user-attachments/assets/63ac3a71-6ce8-46ef-967f-fd53fd23a757" width="400" />
 </p>
 
 ![](images/image3.png)
