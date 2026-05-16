@@ -48,6 +48,8 @@
   - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   - [Special Enemies Spawn Delay](#special-enemies-delay)
   - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
+  - [Specialist Charge Rate](#specialist-charge-rate)
+  - [Upgraded Sword Behavior](#upgraded-sword-behavior)
   - [TODO](#todo)
 
 ---
@@ -969,6 +971,62 @@ Because there is no “else” statement at the end. If level.dog_round_count is
 
 ---
 
+### Specialist Charge Rate
+Every zombie in Black Ops 3 gives exactly 2% charge to your specialist weapon when killed. Because the meter caps at 100%, it takes exactly **50 zombie kills** to fully charge any specialist weapon from zero.<br>
+On Der Eisendrache, there is hardcoded penalty if you use the upgraded bows, which changes the charge rate to **0.25x** (25%). This means it takes **200 kills** withe the upgraded bows, to charge your Ragnaroks from 0%.<br>
+* **Storm Bow**, **Void Bow**, and **Wolf Bow** all trigger this penalty.<br>
+
+The **Fire Bow** is actually supposed to have this penalty too, but it doesn't, because there's a type when checking for the Fire Bow, the code looks for `"elemental_bow_run_prison"` instead of the actual weapon name, `"elemental_bow_rune_prison"`. Because of this missing "e", the game doesn't recognize the FIre Bow as an upgraded bow, meaning it completely bypases the penalty and charges the Ragnaroks in the normal rate of 2%, which it takes 50 kills from 0%.
+
+From `_zm_weap_gravityspikes.gsc`:
+```gsc
+if(isdefined(e_player) && isdefined(e_player.hero_power))
+	{
+		w_gravityspike = getweapon("hero_gravityspikes_melee");
+		if(isdefined(ai_enemy.heroweapon_kill_power))
+		{
+			n_perk_factor = 1;
+			if(e_player hasperk("specialty_overcharge"))
+			{
+				n_perk_factor = getdvarfloat("gadgetPowerOverchargePerkScoreFactor");
+			}
+			if(isdefined(ai_enemy.damageweapon) && (
+      issubstr(ai_enemy.damageweapon.name, "elemental_bow_demongate") || 
+      issubstr(ai_enemy.damageweapon.name, "elemental_bow_run_prison") || // <-- Here Typo
+      issubstr(ai_enemy.damageweapon.name, "elemental_bow_storm") || 
+      issubstr(ai_enemy.damageweapon.name, "elemental_bow_wolf_howl")))
+			{
+				n_perk_factor = 0.25;
+			}
+			e_player.hero_power = e_player.hero_power + (n_perk_factor * ai_enemy.heroweapon_kill_power);
+			e_player.hero_power = math::clamp(e_player.hero_power, 0, 100);
+			if(e_player.hero_power >= e_player.hero_power_prev)
+			{
+				e_player gadgetpowerset(e_player gadgetgetslot(w_gravityspike), e_player.hero_power);
+				e_player clientfield::set_player_uimodel("zmhud.swordEnergy", e_player.hero_power / 100);
+				e_player clientfield::increment_uimodel("zmhud.swordChargeUpdate");
+			}
+			if(e_player.hero_power >= 100)
+			{
+				e_player update_gravityspikes_state(2);
+			}
+		}
+	}
+  ```
+
+---
+
+### Upgraded Sword Behavior
+
+#### - Target Priority & Parasites
+When the autonomous flying sword looks for an enemy, it targets whatever is physically closest to the player, not what is closest to the sword itself. However, because it scans all enemy types (not just zombies), it will prioritize Parasites (Wasps) if they fly directly over your head. Because Parasites can fly out of bounds, the sword will chase them and can get permanently stuck outside the map's pathing grid (nav-mesh) until its energy depletes.
+
+#### - The "Look Away" Mechanic
+If the flying sword currently has **no active targets** (no zombies are nearby), it runs a check on your camera's Field of View. <br>
+If the idling sword leaves the 120 degree cone in front of your screen, meaning you turned your back to it, the game forces the sword to relocate. It will instantly fly to a spot exactly 80 units (about 6.5 feet / 2 meters) directly in front of the player's face. 
+
+---
+
 # TODO
 
 Zombies Health behavior from round 112+ // TODO
@@ -1000,7 +1058,7 @@ Strange Spiders behaviour // TODO
 Spider won't move after it spawns, and after a half a second to a second it just teleports, somewhere random in the room, and sometimes upside down, sideways or normal but stuck in the ground, and it won't move, after this teleport For a few minutes it seems that it teleports to the same location 
 
 
-Furies and Keeper not spawning when players stand in certain locations // TODO
+on Revelations furies and Keeper not spawning when players stand in certain locations // TODO
 
 Shang PAP causing random CI's very inconsistent, need to look what could cause it // TODO
 
