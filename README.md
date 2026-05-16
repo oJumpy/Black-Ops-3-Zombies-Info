@@ -974,9 +974,9 @@ Because there is no “else” statement at the end. If level.dog_round_count is
 ### Specialist Charge Rate
 Every zombie in Black Ops 3 gives exactly 2% charge to your specialist weapon when killed. Because the meter caps at 100%, it takes exactly **50 zombie kills** to fully charge any specialist weapon from zero.<br>
 On Der Eisendrache, there is hardcoded penalty if you use the upgraded bows, which changes the charge rate to **0.25x** (25%). This means it takes **200 kills** withe the upgraded bows, to charge your Ragnaroks from 0%.<br>
-* **Storm Bow**, **Void Bow**, and **Wolf Bow** all trigger this penalty.<br>
+**Storm Bow**, **Void Bow**, and **Wolf Bow** all trigger this penalty.<br>
 
-The **Fire Bow** is actually supposed to have this penalty too, but it doesn't, because there's a type when checking for the Fire Bow, the code looks for `"elemental_bow_run_prison"` instead of the actual weapon name, `"elemental_bow_rune_prison"`. Because of this missing "e", the game doesn't recognize the FIre Bow as an upgraded bow, meaning it completely bypases the penalty and charges the Ragnaroks in the normal rate of 2%, which it takes 50 kills from 0%.
+The **Fire Bow** is actually supposed to have this penalty too, but it doesn't, because there's a typo when checking for the Fire Bow, the code looks for `"elemental_bow_run_prison"` instead of the actual weapon name, `"elemental_bow_rune_prison"`. Because of this missing "e", the game doesn't recognize the FIre Bow as an upgraded bow, meaning it completely bypases the penalty and charges the Ragnaroks in the normal rate of 2%, which it takes 50 kills from 0%.
 
 From `_zm_weap_gravityspikes.gsc`:
 ```gsc
