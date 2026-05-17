@@ -6,7 +6,11 @@
   <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
 </p>
 
+
+
 ## Contents
+**[Overlays Warning](#overlays-crash-warning)**
+---
 **[Sleep / Hibernate](#sleep--hibernate)**
   - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
 ---
@@ -51,6 +55,46 @@
   - [Specialist Charge Rate](#specialist-charge-rate)
   - [Upgraded Sword Behavior](#upgraded-sword-behavior)
   - [TODO](#todo)
+
+---
+
+# Overlays Crash Warning
+
+> [!CAUTION]
+> **Having ANY kind of external overlay enabled while playing High Round Zombies games is a massive instability risk and can easily crash your game.** 
+>
+> While this is somewhat common knowledge in the community, it is very easily forgotten and ruins countless high-round runs (like accidentally bringing up the Steam overlay mid-game). You should completely disable **every kind of external overlay** before starting a run.
+
+**Known Overlays that cause crashes:**
+* **Steam Overlay**
+* **Discord Overlay**
+* **Xbox Game Bar**
+* **NVIDIA GeForce Experience**
+* **AMD Radeon Overlay**
+* **MSI Afterburner**
+* *Literally any other third party software that draws over your game.*
+
+### How to Disable the Steam Overlay:
+1. Open **Steam**.
+2. Click on "**Steam**" in the top-left corner.
+3. Click on "**Settings**".
+4. On the left sidebar, select the "**In Game**" tab.
+5. Toggle **OFF** the setting that says: *"Enable the Steam Overlay while in-game"*.
+
+### How to Disable the Discord Overlay:
+1. Open **Discord**.
+2. Click on the **User Settings** (the gear icon ⚙️) next to your profile picture at the bottom left.
+3. Scroll down the left sidebar to the **Activity Settings** section and click on **Game Overlay**.
+4. Toggle **OFF** the setting that says: *"Enable in-game overlay"*.
+
+### How to Disable the Xbox Game Bar (Windows):
+1. Open Windows **Settings** (Press `Windows Key + I`).
+2. Click on **Gaming**.
+3. Select **Xbox Game Bar** (or just **Game Bar** depending on your Windows version).
+4. Toggle **OFF** the switch at the top.
+
+> [!IMPORTANT]
+> Make sure you also go into the settings of your **GPU software** or **any other third party software that draws over your game** to ensure their respective in-game overlays are fully disabled.
 
 ---
 
