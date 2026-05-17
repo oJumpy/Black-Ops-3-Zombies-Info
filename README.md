@@ -63,7 +63,7 @@
 > [!CAUTION]
 > **Having ANY kind of external overlay enabled while playing High Round Zombies games is a massive instability risk and can easily crash your game.** 
 >
-> While this is somewhat common knowledge in the community, it is very easily forgotten and ruins countless high-round runs (like accidentally bringing up the Steam overlay mid-game). You should completely disable **every kind of external overlay** before starting a run.
+> While this is somewhat common knowledge in the community, it is very easily forgotten and ruins countless high round runs (like accidentally bringing up the Steam overlay mid game). You should completely disable **every kind of external overlay** before starting a run.
 
 **Known Overlays that cause crashes:**
 * **Steam Overlay**
