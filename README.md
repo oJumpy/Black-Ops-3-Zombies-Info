@@ -32,8 +32,8 @@
   - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
   - [Throwable Equipment Error](#throwable-equipment-error)
   - [“Hitmarker” Freeze](#hitmarker-freeze)
-  - [Early Reset / G-Spawn](#early-reset--g-spawn)
-  - [Shadows of Evil Error](#shadows-of-evil-error)
+  - [Early Reset / G_Spawn](#early-reset--g_spawn)
+  - [Shadows of Evil Errors](#shadows-of-evil-errors)
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
 ---
 **[Read Error Tracker](#read-error-tracker)**
@@ -421,35 +421,44 @@ Because of this some smgs, can actually reach in the 160k hitmarkers
 
 ---
 
-## Early Reset / G-Spawn
+## Early Reset / G_spawn
 *(Mostly an issue on ZnS, but it can happen on any map if you spawn kill ground spawners)*
 
 **ZnS Example:**
 In the **Skull Room**, **ground spawners** will **add entities** only if they’re killed instantly before fully spawning, usually while using an instakill or Death Machines.
 
-This can cause **G-Spawn** if the entity count builds too high.
+This can cause **G_Spawn** if the entity count builds too high.
 
 Be careful using Instakills and Death Machines, try not to spawn kill zombies
 
-The **Skull of Nan Sapwe is safe.** It plays an animation first, so it doesn’t instantly kill the zombies spawning and doesn’t cause G-Spawn or Entity buildup.
+The **Skull of Nan Sapwe is safe.** It plays an animation first, so it doesn’t instantly kill the zombies spawning and doesn’t cause G_spawn or Entity buildup.
 
 **Shadows of Evil Example:**
-If you play the *Junction* Strategy and shoot directly at the ground spawner with an instakill or death machine, it will cause G-Spawn to build up.
+If you play the *Junction* Strategy and shoot directly at the ground spawner with an instakill or death machine, it will cause G_spawn to build up.
 
-Using the Sword Slam **is safe.** It plays an animation first, so it doesn’t instantly kill the zombies spawning and doesn’t cause G-Spawn or Entity buildup. ![](images/image3.png)
+Using the Sword Slam **is safe.** It plays an animation first, so it doesn’t instantly kill the zombies spawning and doesn’t cause G_spawn or Entity buildup. ![](images/image3.png)
 
 ---
 
-## Shadows of Evil Error
+## Shadows of Evil Errors
+### Sound Error
 #### - What Causes the Error
-This is what I believe is some **Animation Error,** if you shoot the Apothicon Servant **near the rail**, you’ll kill zombies while they’re in their **climb animation**, which causes the crash.
+This is what I believe to be a **Sound Error** issue, when a large group of zombies are tightly inside each other (I belive around 15) and die simultaneosly, for example this can happen, from an Apothicon Servant shot when zombies are climbing/jumping from the ground spawner on to the rail during Junction Strategy or it can happen while shooting a Thundergun shot when a large amount of zombies is behing a single barrier, it completely overloads the sound system, causing an instant crash.
 
-Doing this repeatedly for long periods (around **2 hours** of game time) builds up to an error.
+There's **NO** build up towards this error, it can happen instantly at any point, as long as the conditions are met without warning.
+
+#### - What Happens
+In `_zm_spawner.gsc`, every zombie that dies executes `zombie StopSounds();` on the exact same frame.<br>
+The sound system has to queue up and process each zombie's `StopSounds` command one by one, when these `zombie StopSounds();` commands happen on roughly 15 Zombies, these commands are queued in `SND_QueueAdd` at the same time.<br>
+Because the zombies are basically at the same coordinates, they are identical, forcing the sound manager to sort a massive queue of identical priority sounds.<br>
+These sounds are tracked in the engine's global sound manager inside an array called `voiceAliasHash`. A single zombie can have up to 10 active "voices" running at once in loop.<br>
+To process this active `voiceAliasHash` list, the engine requests a temporary memory block. This block has a hardcoded limit of **`24576 bytes`** which can hold up to **3072 pointers**. <br>
+Because of the sudden spike of identical sounds stopped at the same spot all at once, it exceeds this **3072 Pointers** limit, the allocator fails and returns a `NULL` (0x0) pointer. The game fails to check for this and immediately tries to write to it at `0x14000EAC8` address, causing an instant `0xC0000005` Access Violation crash.
 
 #### - How to Avoid the Crash
 *Can look at pictures to where you can safely shoot*
 * **Do NOT shoot near the rail.**
-* If you want to **spam safely**, shoot the **ground spawner itself**.
+* If you want to **spam safely**, shoot the **ground spawner it self**.
   This has been tested and safe to do, there’s been multiple 255s doing this
 * If you're doing **single shots**, shoot nearly outside the ritual circle that’s in Junction (look pictures) Safe
 
@@ -460,6 +469,36 @@ Doing this repeatedly for long periods (around **2 hours** of game time) builds 
   &nbsp;
   <img src="https://github.com/user-attachments/assets/d5973acb-0c0c-4caa-9d56-f97a0ce9cd8e" width="400" />
 </p>
+
+### G_spawn Error
+#### - What causes the Error
+This error is caused by an **entity leak** that occurs when zombies are instantly killed while still in their rising spawn animation, such as spawn killing a ground spawner with an Instakill or a Death Machine. <br>
+
+This is a **gradual build up error**. Every time a zombie is spawn illed during its rise animation, one entity is permanently leaked into the game;s active pool.
+
+#### - What Happens
+When a zombie spawns from a ground spawner, this function `do_zombie_rise(spot)` runs inside `_zm_spawner.gsc`. <br>
+This function handles the rising animations, using a temporary `script_origin` helper entity called an **anchor**:
+```gsc
+	self.anchor = spawn("script_origin", self.origin);
+	self.anchor.angles = self.angles;
+	self linkto(self.anchor);
+```
+Under normal conditions, once the zombie finishes it's animation, the thread unlinks the zombie and deletes the ancor:
+```gsc
+	self unlink();
+	
+	if(isDefined(self.anchor))
+	{
+		self.anchor delete();
+	}
+```
+Because at the top of `do_zombie_rise()` registers `self endon("death");`, killing the zombie instantly while spawning terminates the thread immediately. The script is aborted before it can ever reach the cleanup bloc, leaving the `script_origin` ancor permanently orphaned. This keeps consiming slots in the engine's active pool, once the total entity count reaches 1022, the game gives you `G_Spawn: no free entities`
+
+
+#### - How to Avoid the Crash
+- Do **NOT** spawn kill, ground spawners with Instakiills or Death Machines
+- Using the Sword Slam **is safe.** It plays an animation first, so it doesn’t instantly kill the zombies spawning and keeps the G_spawn count safe.
 
 ---
 
