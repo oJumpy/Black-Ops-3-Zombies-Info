@@ -8,13 +8,16 @@
 
 
 
-## Contents
+# Contents
+
 **[Overlays Warning](#overlays-crash-warning)**
 ---
 **[Sleep / Hibernate](#sleep--hibernate)**
+---
   - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
 ---
 **[Workshop Mods](#workshop-mods)**
+---
   - [Strat Tester - Highlight & SPH](#strat-tester---highlight--sph)
   - [Zombies Community patch](#zombies-community-patch)
   - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
@@ -22,13 +25,15 @@
 
 ---
 **[AATs (Alternate Ammo Types)](#aats-alternate-ammo-types)**
+---
   - [Lucky Crit](#lucky-crit)
 
 ---
 **[Frozen/Torso/Invisibles Zombies Rounds](#frozen-rounds)**
-
+---
 ---
 **[Errors](#errors)**
+---
   - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
   - [Throwable Equipment Error](#throwable-equipment-error)
   - [“Hitmarker” Freeze](#hitmarker-freeze)
@@ -37,15 +42,17 @@
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
 ---
 **[Read Error Tracker](#read-error-tracker)**
+---
   - [How To Read Livesplit Error Tracker](#how-to-read-livesplit-error-tracker)
 ---
 **[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
 
 ---
 **[25 Day Error Bypass](#25-day-error-bypass)**
-
+---
 ---
 **[Niche Knowledge](#niche-knowledge)**
+---
   - [Darkness](#darkness)
     - [Darkness Video + Images](#darkness-video--images)
   - [Instakill Drop Behavior](#instakill-drop-behavior)
@@ -238,7 +245,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3228882538
 * **Activation Chance:** 15% per bullet.
 * **Player Cooldown:** 15 seconds.
 * **Global/Coop Cooldown:** 8 seconds.
-* **Lifespan/Kill Limit:** The Turned zombie lasts for exactly 20 seconds OR until it reaches a maximum of 12 kills—whichever happens first.
+* **Lifespan/Kill Limit:** The Turned zombie lasts for exactly 20 seconds OR until it reaches a maximum of 12 kills whichever happens first.
 * When a zombie is initially Turned, it creates a small "blast" (aka Thunder Wall Effect) that flings and kills up to 3 nearby zombies within a 90 unit radius.
 
 **Blast Furnace**
@@ -294,7 +301,7 @@ Rounds where the **Bows** kills zombies properly:
 > ## **1-112, 116-121, 123, 126, 127, 131, 135, 137-139, 141, 143, 152, 154, 162+**
 
 **Fire Bow:**
-> ## **1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-162**
+> ## **1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-161**
 
 ---
 
@@ -556,7 +563,9 @@ As of **20/04/2026**
   * **The Arms/Plates Dynamic Entities:** When you shoot off a valk’s arm, faceplate (i believe camera too seems to be an entity that can fall, not too sure though), it falls to the ground as a dynamic physics entity `dynEnt`. The code is supposed to clean up this entity once the piece hits the floor, however, it only cleans up the piece if it falls **less** than 15 units (inches), which I believe is a typo. 
   Since valks hover further than that, meaning the script hits the `else` block, breaks the loop, just abandons those entities and these invisible dynamic entities stay active on the map forever.
 
-[15 Units btw…](https://github-production-user-asset-6210df.s3.amazonaws.com/87671800/588462207-ae3a66eb-f272-498d-b53d-1f4a26a789cd.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260506%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260506T180621Z&X-Amz-Expires=300&X-Amz-Signature=e82f23cbb672fede52b1b65547957c95b3aba29bb41601370dae0c7f9c0aac40&X-Amz-SignedHeaders=host&response-content-type=image%2Fpng) This is why i wanna believe it was a typo
+15 Units btw… <br>
+<img src="https://github.com/user-attachments/assets/4195380b-e890-4694-9596-831f8c36aeec" width="400" /> <br>
+This is why i wanna believe it was a typo
 
 So you can actually safely kill valks, with shield blast, but you have to be careful to avoid the two leaks mentioned above.
 
@@ -931,6 +940,86 @@ function waiting_for_next_spider_spawn()
 ```
 Because the `round_spawn` thread is actively processing this spider spawn, this “`wait n_default_wait;`” blocks the main `round_spawning`. Because the game calls the spider spawn logic as a direct function rather than starting it on a separate thread, `round_spawning` must wait for this `waiting_for_next_spider_spawn` function to finish before it can try to spawn the next zombie.
 
+### Shadows of Evil Meatballs Blocking Spawns in Junction areas
+If you stand in the **RED** areas meatballs will **NOT** spawn (SOLO)
+<img src="https://github.com/user-attachments/assets/81db4b2d-fe2a-4c9f-98ee-f56dfb62fbca" width="600" />
+
+* When playing the "Junction Strategy", you can make zombies **NOT** spawn if you stand in certain areas. 
+* When Pack a Punch is completed, the game's custom spawn logic `function_33aa4940()` inside `zm_zod.gsc` will occasionally try to replace a standard zombie spawn with a mid round special meatball spawn. It does this by calling `zm_ai_raps::special_raps_spawn(1)` on the main spawning thread.
+* To find a spawning position for the meatball, the game calls `calculate_spawn_position(favorite_enemy)`. This function queries the navmesh around the player (`positionquery_source_navigation`) using a minimum and maximum spawn range that scales based on player count:
+
+`_zm_ai_raps.gsc`:
+```gsc
+function calculate_spawn_position(favorite_enemy)
+{
+    position = favorite_enemy.last_valid_position;
+    if(!isdefined(position))
+    {
+        position = favorite_enemy.origin;
+    }
+    if(level.players.size == 1)
+    {
+        n_raps_spawn_dist_min = 450;
+        n_raps_spawn_dist_max = 900;
+    }
+    else
+    {
+        if(level.players.size == 2)
+        {
+            n_raps_spawn_dist_min = 450;
+            n_raps_spawn_dist_max = 850;
+        }
+        else
+        {
+            if(level.players.size == 3)
+            {
+                n_raps_spawn_dist_min = 700;
+                n_raps_spawn_dist_max = 1000;
+            }
+            else
+            {
+                n_raps_spawn_dist_min = 800;
+                n_raps_spawn_dist_max = 1200;
+            }
+        }
+    }
+    query_result = positionquery_source_navigation(position, n_raps_spawn_dist_min, n_raps_spawn_dist_max, 200, 32, 16);
+    if(query_result.data.size)
+    {
+        a_s_locs = array::randomize(query_result.data);
+        if(isdefined(a_s_locs))
+        {
+            foreach(s_loc in a_s_locs)
+            {
+                if(zm_utility::check_point_in_enabled_zone(s_loc.origin, 1, level.active_zones))
+                {
+                    s_loc.origin = s_loc.origin + vectorscale((0, 0, 1), 16);
+                    return s_loc;
+                }
+            }
+        }
+    }
+    return undefined;
+}
+```
+
+#### Why Spawns Freeze:
+* When standing in a **"Blocking Spot"** within Junction, the game tries to find a spawn location inside a **ring around you** (between 450 and 900 units away in Solo).<br>
+Because the Junction is so small, just standing in the middle makes the entire area too close to you (under 450 units), while the actual spawning ring (450–900 units) is entirely inside closed areas (like the unopened Spawn Room).
+Since there are no valid spots for a meatball to spawn within the required spawning distance, `calculate_spawn_position()` fails to find a single valid point in `level.active_zones` and returns `undefined`:
+```gsc
+if(!isdefined(s_spawn_loc))
+{
+    wait(randomfloatrange(0.6666666, 1.333333));
+    continue;
+}
+```
+* **This completely freezes the main round spawning thread.** No other zombies, meatballs, or parasites can spawn until the player physically moves out of the blocking spot and allows the loop to successfully find an active navmesh point and terminate.
+
+* In a 3 player game, the **minimum** spawn distance increases to **700 units**. In a 4 player game, it increases to **800 units**. <br>
+Because the Junction is so small, having 3 or 4 players in the room means the entire playable area is too close to the players. Any spawn point far enough away to be allowed just goes inside the closed Spawn Room.<br>
+As a result, the spawner is unable to find any valid points and nothing spawns, making the Junction Strat basically unplayable in 3p/4p games.
+
 ### Extra Spiders Delay on ZnS
 - When you shoot a spider and kill, it visually dies immediately and grants you +50 points. However, the spider entity itself stays alive for a full 10 seconds.
 
@@ -1104,7 +1193,7 @@ if(isdefined(e_player) && isdefined(e_player.hero_power))
 #### - Target Priority & Parasites
 When the autonomous flying sword looks for an enemy, it targets whatever is physically closest to the player, not what is closest to the sword itself. However, because it scans all enemy types (not just zombies), it will prioritize Parasites (Wasps) if they fly directly over your head. Because Parasites can fly out of bounds, the sword will chase them and can get permanently stuck outside the map's pathing grid (nav-mesh) until its energy depletes.
 
-#### - The "Look Away" Mechanic
+#### - The "Look Away" Tech
 If the flying sword currently has **no active targets** (no zombies are nearby), it runs a check on your camera's Field of View. <br>
 If the idling sword leaves the 120 degree cone in front of your screen, meaning you turned your back to it, the game forces the sword to relocate. It will instantly fly to a spot exactly 80 units (about 6.5 feet / 2 meters) directly in front of the player's face. 
 
