@@ -1211,7 +1211,7 @@ If the idling sword leaves the 120 degree cone in front of your screen, meaning 
 
 ### Trap Immunity / Panzer Flame Glitch
 #### - How does it happen?
-If you stand directly underneath a Panzer while it is landing from the sky, you will become **permanently immune** to all Panzer flamethrower attacks and Electric Traps for the rest of the game.
+If you stand directly underneath a Panzer while it is landing from the sky, you will become **permanently immune** to all Panzer flamethrower attacks and Electric Traps for the rest of the game.<br>
 If you try this and find that it doesn't work, it's because you went under him too early. If you get burned immediately as he spawns, the temporary burn effect (which lasts for 1.5 seconds, as explained in the **Why** section below) will have enough time to finish and clear itself normally before the Panzer actually touches the ground. 
 
 #### - Why does it happen?
