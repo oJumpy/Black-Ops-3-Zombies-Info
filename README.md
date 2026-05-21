@@ -11,48 +11,57 @@
 # Contents
 
 **[Overlays Warning](#overlays-crash-warning)**
+
 ---
+
 **[Sleep / Hibernate](#sleep--hibernate)**
----
   - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
+
 ---
+
 **[Workshop Mods](#workshop-mods)**
----
   - [Strat Tester - Highlight & SPH](#strat-tester---highlight--sph)
   - [Zombies Community patch](#zombies-community-patch)
   - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
   - [Aesthetic Mods](#aesthetic-mods)
 
 ---
+
 **[AATs (Alternate Ammo Types)](#aats-alternate-ammo-types)**
----
   - [Lucky Crit](#lucky-crit)
 
 ---
+
 **[Frozen/Torso/Invisibles Zombies Rounds](#frozen-rounds)**
+
 ---
----
+
 **[Errors](#errors)**
----
+
   - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
   - [Throwable Equipment Error](#throwable-equipment-error)
   - [“Hitmarker” Freeze](#hitmarker-freeze)
   - [Early Reset / G_Spawn](#early-reset--g_spawn)
   - [Shadows of Evil Errors](#shadows-of-evil-errors)
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
+
 ---
+
 **[Read Error Tracker](#read-error-tracker)**
----
+
   - [How To Read Livesplit Error Tracker](#how-to-read-livesplit-error-tracker)
+
 ---
+
 **[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
 
 ---
+
 **[25 Day Error Bypass](#25-day-error-bypass)**
+
 ---
----
+
 **[Niche Knowledge](#niche-knowledge)**
----
   - [Darkness](#darkness)
     - [Darkness Video + Images](#darkness-video--images)
   - [Instakill Drop Behavior](#instakill-drop-behavior)
@@ -61,6 +70,7 @@
   - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
   - [Specialist Charge Rate](#specialist-charge-rate)
   - [Upgraded Sword Behavior](#upgraded-sword-behavior)
+  - [Trap Immunity / Panzer Flame Glitch](#trap-immunity--panzer-flame-glitch)
   - [TODO](#todo)
 
 ---
@@ -1199,15 +1209,58 @@ If the idling sword leaves the 120 degree cone in front of your screen, meaning 
 
 ---
 
+### Trap Immunity / Panzer Flame Glitch
+#### - How does it happen?
+If you stand directly underneath a Panzer while it is landing from the sky, you will become **permanently immune** to all Panzer flamethrower attacks and Electric Traps for the rest of the game.
+If you try this and find that it doesn't work, it's because you went under him too early. If you get burned immediately as he spawns, the temporary burn effect (which lasts for 1.5 seconds, as explained in the **Why** section below) will have enough time to finish and clear itself normally before the Panzer actually touches the ground. 
+
+#### - Why does it happen?
+When a Panzer spawns, the game checks if a player is standing underneath it. If they are, the script tells the game to burn the player using `function_3389e2f3()`.
+
+`_zm_ai_mechz.gsc`:
+```gsc
+function function_3389e2f3(mechz)
+{
+	if(!(isdefined(self.is_burning) && self.is_burning) && zombie_utility::is_player_valid(self, 1))
+	{
+		self.is_burning = 1; // 1. Sets your "is_burning" state to true
+		if(!self hasperk("specialty_armorvest"))
+		{
+			self burnplayer::setplayerburning(1.5, 0.5, 30, mechz, undefined);
+		}
+		else
+		{
+			self burnplayer::setplayerburning(1.5, 0.5, 20, mechz, undefined);
+		}
+		wait(1.5); // 2. Waittill the burn timer finishes
+		self.is_burning = 0; // 3. Resets your "is_burning" state to false
+	}
+}
+```
+
+Because it runs directly on the Panzer's temporart landing script, the `wait( 1.5 );` pauses the whole script.<br>
+If the Panzer finishes its landing animation and is into the map *before* those 1.5 seconds are up, the game engine kills the thread. 
+
+Because the thread is killed, the line `self.is_burning = 0;` is completely skipped.<br>
+The game now thinks your character is permanently on fire. Since Panzers and Traps check to make sure you aren't *already* burning before they damage you (to prevent stacking damage), they see you are "burning" and completely ignore you forever. 
+
+`_zm_trap_electric.gsc` & `_zm_trap_fire.gsc`:
+```gsc
+// The trap checks if you are already burning before it decides to hurt you
+if( !IS_TRUE( self.is_burning ) && zm_utility::is_player_valid( self ) )
+{
+    self.is_burning = 1;
+    // ... Shocks / Burns the player ...
+}
+```
+
+---
+
 # TODO
 
 Zombies Health behavior from round 112+ // TODO
 
 function randomize // TODO
-
-Trap Immunity / Panzer Flame Glitch // TODO
-
-When you go under a panzer as it spawns, NOT instantly you have to wait about half a second, you will get flamed by his jetpack and that will grant you with trap immunity, for the entirety of the game
 
 Turned Army // TODO
 
