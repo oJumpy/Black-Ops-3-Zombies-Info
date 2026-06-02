@@ -585,6 +585,96 @@ If they start the “Charge” for the attack, you can still kill them within th
 If they start zapping, you **DO NOT** kill them, wait about a second or two, for any zap to finish.
 Killing manglers seems to actually be safe, they don’t seem to be leaking anything in CSC
 
+
+---
+
+## Box Error
+**NOT** *to be confused with typical grenade or Widows Wine GSC errors -*
+
+### - What Causes This CI Error
+Every single time you spin the mystery box, the game spawns a cleanup thread that is permanently stuck and never gets deleted.
+
+This is a **gradual build up error**. It permanently leaks **Child GSC** variables, eventually leading to a `Connection Interrupted` (CI) / `Server Script Variable Overflow` crash when the Child GSC variable pool hits the engine's hard limit of **130,000**.
+
+In a real high round game where zombie spawning, drops, nade cancel and throwing equipment (nades/monkeys) also consume variable slots, the game will typically crash or CI around after **28,000 to 32,000 box hits**.
+
+### - What Happens?
+Inside `_zm_magicbox.gsc`, every single box spin runs `self thread clean_up_hacked_box();` on the box's static `zbarrier` entity. 
+
+If we look at `clean_up_hacked_box()`, the code is written in a broken order:
+```gsc
+function clean_up_hacked_box()
+{
+	self waittill("box_hacked_respin");
+	self endon("box_spin_done");
+	
+	if(IsDefined(self.weapon_model))
+	{
+		self.weapon_model Delete();
+		self.weapon_model = undefined;
+	}
+    ...
+```
+Because `waittill` is a blocking call, the thread immediately suspends on the first line. 
+
+When the box finishes spinning normally and notifies `"box_spin_done"`, this thread has **not** executed the next line yet and hasn't registered the endon. The thread remains permanently suspended in memory, waiting for a `"box_hacked_respin"` notify that never comes.
+
+### - Why This Mainly Affects Nacht der Untoten
+Because the box must be hit so many times, Nacht is the only map where players are guaranteed to hit the GSC variable limit and crash.
+
+### - What to do?
+The best way to play Nacht is:
+- **Avoid picking up Nukes, Instakills, and Death Machines:**, since these leak variables, which contributes to the Box Error. [Nuke, Instakill, and Death Machine Leaks](#nuke-instakill-and-death-machine-leaks)
+- **Never nade swap, nade cancel, or throw unnecessary equipment (nades/monkeys):**, these will also contribtes to the Box Error. Stealing your box hits left.
+- **Avoid taking downs:**, just downing will leak variables, contributing to the Box Error.
+- Do the 2 Easter Eggs:
+  - Max Ammo Easter Egg
+  - Barrels Song Easter Egg
+  - Doing these 2 EEs, will clean up active threads, and help giving you some extra hits from the box
+
+### - Fun fact
+The only way to clear this leak during gameplay is to trigger a `"box_hacked_respin"` notification on the box's zbarrier. 
+    
+If you play with Mega Gobblegums, using **Respin Cycle** or triggering a Teddy Bear with **Unbearable** will notify `"box_hacked_respin"`. This triggers all the thousands of suspended `waittill` threads, allowing them to reach the end of the function and safely terminate, completely cleaning the leaked variables.
+    
+On a **Classics** or **No Gums** game, this is impossible. You have no way to clear up the leak.
+
+---
+
+## Nuke, Instakill, and Death Machine Leaks
+
+- Unlike Double Points, which uses a clean `level notify` and `level endon` loop to clean up after itself, these powerups flood the GSC engine with active threads.
+
+### - Why Nukes "Leak" (~200 Box Hits)
+- Grabbing a Nuke kills up to 24 zombies simultaneously. For **every single** zombie killed by the nuke, the game engine spawns an asynchronous thread to check for daily challenges:
+
+```gsc
+zombies_nuked[i] dodamage( zombies_nuked[i].health + 666, zombies_nuked[i].origin );
+level thread zm_daily_challenges::increment_nuked_zombie(); // <-- Spawns up to 24 threads
+```
+
+Because these `zm_daily_challenges` functions write directly to the player's profile/stats, they can easily queue up or hang in memory. Grabbing a Nuke is equivalent to losing **~200 box hits**.
+
+### - Why Death Machines Leak
+The Death Machine has a bug in how it calculates bullet damage:
+
+```gsc
+if ( isdefined (level.minigun_damage_adjust_override) )
+	{
+		n_override_damage = thread [[ level.minigun_damage_adjust_override ]](  inflictor, attacker, damage, flags, meansofdeath, weapon, vpoint, vdir, sHitLoc, psOffsetTime, boneIndex, surfaceType  );
+		if( isdefined( n_override_damage ) )
+		{
+			n_percent_damage = n_override_damage;
+		}
+	}
+```
+
+By calling `thread` on a function that is supposed to return a value, if the map has `minigun_damage_adjust_override` defined, the game will **spawn a brand new thread for every single bullet hit**. Because the minigun fires so fast, this quickly leaks a massive amount of GSC variables.
+
+### - Why Instakills Leak
+Similar to the Death Machine, Instakill leaks variables when you kill large groups of zombies quickly. Killing entire hordes spawns temporary threads for death animations, gibbing, and stat tracking all on the exact same frame.
+---
+
 # Read Error Tracker
 
 ### How To Read Livesplit Error Tracker
