@@ -674,7 +674,7 @@ if ( isdefined (level.minigun_damage_adjust_override) )
 By calling `thread` on a function that is supposed to return a value, if the map has `minigun_damage_adjust_override` defined, the game will **spawn a brand new thread for every single bullet hit**. Because the minigun fires so fast, this quickly leaks a massive amount of GSC variables.
 
 ### - Why Instakills Leak
-Similar to the Death Machine, Instakill leaks variables when you kill large groups of zombies quickly. Killing entire hordes spawns temporary threads for death animations, gibbing, and stat tracking all on the exact same frame.
+- Similar to the Death Machine, Instakill leaks variables when you kill large groups of zombies quickly. Killing entire hordes spawns temporary threads for death animations, gibbing, and stat tracking all on the exact same frame.
 ---
 
 # Read Error Tracker
