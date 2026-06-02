@@ -44,6 +44,8 @@
   - [Early Reset / G_Spawn](#early-reset--g_spawn)
   - [Shadows of Evil Errors](#shadows-of-evil-errors)
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
+  - [Box Error](#box-error)
+  - [Nuke, Instakill, and Death Machine Leaks](#nuke-instakill-and-death-machine-leaks)
 
 ---
 
