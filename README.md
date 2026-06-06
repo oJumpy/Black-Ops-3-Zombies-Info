@@ -73,6 +73,8 @@
   - [Specialist Charge Rate](#specialist-charge-rate)
   - [Upgraded Sword Behavior](#upgraded-sword-behavior)
   - [Trap Immunity / Panzer Flame Glitch](#trap-immunity--panzer-flame-glitch)
+  - [Broken Randomize Function](#broken-randomize-function)
+  - [Weighted Weapons](#weighted-weapons)
   - [TODO](#todo)
 
 ---
@@ -674,7 +676,8 @@ if ( isdefined (level.minigun_damage_adjust_override) )
 By calling `thread` on a function that is supposed to return a value, if the map has `minigun_damage_adjust_override` defined, the game will **spawn a brand new thread for every single bullet hit**. Because the minigun fires so fast, this quickly leaks a massive amount of GSC variables.
 
 ### - Why Instakills Leak
-- Similar to the Death Machine, Instakill leaks variables when you kill large groups of zombies quickly. Killing entire hordes spawns temporary threads for death animations, gibbing, and stat tracking all on the exact same frame.
+Similar to the Death Machine, Instakill leaks variables when you kill large groups of zombies quickly. Killing entire hordes spawns temporary threads for death animations, gibbing, and stat tracking all on the exact same frame.
+
 ---
 
 # Read Error Tracker
@@ -965,7 +968,7 @@ function wasp_spawn_init( ai, origin, should_spawn_fx = true )
         angle = VectorToAngles( ai.favoriteenemy.origin - v_origin );
     else
         angle = ai.angles;
-    angles = ( ai.angles[0], angle[1], ai.angles[2] );
+    angles = ( ai.angles[0], angle, ai.angles[2] );
 
     //DCS 080714: this should work for an ai vehicle but currently doesn't. Support should be added soon.
     //ai ForceTeleport( v_origin, angles );
@@ -1348,11 +1351,170 @@ if( !IS_TRUE( self.is_burning ) && zm_utility::is_player_valid( self ) )
 
 ---
 
+# Broken Randomize Function
+
+The function `array::randomize(array)` is responsible for, as the function name suggests, randomizing arrays. This includes randomizing your Gobblegums Pack at the start of a cycle and randomizing the list of weapon `keys` when you spin the Box.
+Because of how this formula is written, it is not truly random.
+
+```gsc
+function randomize( array )
+{
+	for ( i = 0; i < array.size; i++ )
+	{
+		j = RandomInt( array.size );
+		temp = array[ i ];
+		array[ i ] = array[ j ];
+		array[ j ] = temp;
+	}
+
+	return array;
+}
+```
+
+### How it Affects the Mystery Box (Nacht Example)
+When you spin the box, the game randomizes the list of all registered weapons. It then reads the list from left to right and gives you the first weapon that is allowed to spawn.
+
+Because of the broken **randomize function** and due to the function `GetArrayKeys()` which it actually returns the weapon list in **reverse order** of how they were written in the level weapon list, weapons coded at the *front* of the list (which are actually at the bottom of the code) are heavily favored to stay near the front. This means they are checked first and much *easier* to get, Weapons at the back (top of the code) are much **harder** to obtain.
+
+
+On Nacht, weapons coded near the bottom like Ray Gun Mark 2, SVG, Locus, AK and Bootlegger, end up at the front of the list and are the easiest to roll. Weapons coded near the top, like Ray Gun, Thundergun, ICR, end up at the back of the list and are the hardest to obtain.
+
+This means you are almost **twice as likely** to roll an SVG compared to rolling a Thundergun, because of this broken function.
+
+---
+
+# Weighted Weapons 
+
+Out of the 14 maps, only 4 are affected by weighted mystery box functions. 
+* [Zetsubou No Shima KT-4](#zetsubou-no-shima-kt-4)
+* [Gorod Krovi Mark 3 & Verrückt Wunderwaffe DG-2](#gorod-krovi-mark-3--verruckt-wunderwaffe-dg-2)
+* [Revelations Apothicon Servant](#revelations-apothicon-servant)
+
+### **Zetsubou No Shima KT-4**
+The KT-4 (`hero_mirg2000`) is weighted. When a player trades the KT-4, the game tracks your Box Hits to increase the forced percentage chance of obtaining it:
+* **1st Box Hit** after trading it: **10%** chance to obtain it.
+* **2nd Box Hit**: **10%** chance.
+* **3rd Box Hit**: **30%** chance.
+* **4th Box Hit**: **60%** chance.
+* **5th+ Box Hit**: Drops back to **10%** chance.
+
+#### - From `zm_island_ww_quest.gsc`:
+```gsc
+function function_659c2324(a_keys)
+{
+	var_b45fbf8c = zm_pap_util::get_triggers();
+	if(level flag::get("players_lost_ww"))
+	{
+		level.var_2cb8e184++; // box hit counter
+		switch(level.var_2cb8e184)
+		{
+			case 1: n_chance = 10; break;
+			case 2: n_chance = 10; break;
+			case 3: n_chance = 30; break;
+			case 4: n_chance = 60; break;
+			default: n_chance = 10; break;
+		}
+		if(randomint(100) <= n_chance && zm_magicbox::treasure_chest_canplayerreceiveweapon(self, level.var_5e75629a, var_b45fbf8c) && !self hasweapon(level.var_a4052592))
+		{
+			arrayinsert(a_keys, level.var_5e75629a, 0); // forces the weapon to slot 0
+			self thread function_97d5f905();
+		}
+		else
+		{
+			arrayremovevalue(a_keys, level.var_5e75629a);
+		}
+	}
+	else if(self hasweapon(level.var_5e75629a) || self hasweapon(level.var_a4052592))
+	{
+		arrayremovevalue(a_keys, level.var_5e75629a); // Removes it if obtained
+	}
+	return a_keys;
+}
+```
+
+### **Gorod Krovi Mark 3 & Verrückt Wunderwaffe DG-2**
+For their respective Wonder Weapons, `zm_stalingrad` and `zm_asylum` both use the exact same weighting function. The game tracks your Box Hits to gradually increase your percentage chance of obtaining the Wonder Weapon:
+* **1 to 12 Box Hits**: **5%** chance.
+* **13 to 17 Box Hits**: Increases to **8%** chance.
+* **Anything higher than 17 Box Hits**: **12%** chance.
+
+#### - From `zm_stalingrad.gsc` (Gorod Krovi) in `function_659c2324`:
+```gsc
+level.var_12d3a848++; // Increments Box Hits
+if(level.var_12d3a848 <= 12)
+{
+	n_chance = 5; // 5% chance
+}
+else
+{
+	if(level.var_12d3a848 > 12 && level.var_12d3a848 <= 17)
+	{
+		n_chance = 8; // 8% chance
+	}
+	else if(level.var_12d3a848 > 17)
+	{
+		n_chance = 12; // 12% chance
+	}
+}
+if(randomint(100) <= n_chance && zm_magicbox::treasure_chest_canplayerreceiveweapon(self, level.w_raygun_mark3, var_b45fbf8c) && !self hasweapon(level.w_raygun_mark3_upgraded))
+{
+	arrayinsert(a_keys, level.w_raygun_mark3, 0); // Forces the Mark 3 to slot 0
+	level.var_12d3a848 = 0; // Resets the Box Hits counter
+}
+```
+
+#### - From `zm_asylum.gsc` (Verrückt) in `function_659c2324`:
+```gsc
+level.var_12d3a848++; // Increments Box Hits
+if(level.var_12d3a848 <= 12)
+{
+	n_chance = 5; // 5% chance
+}
+else
+{
+	if(level.var_12d3a848 > 12 && level.var_12d3a848 <= 17)
+	{
+		n_chance = 8; // 8% chance
+	}
+	else if(level.var_12d3a848 > 17)
+	{
+		n_chance = 12; // 12% chance
+	}
+}
+if(randomint(100) <= n_chance && zm_magicbox::treasure_chest_canplayerreceiveweapon(self, level.weaponzmteslagun) && !self hasweapon(level.weaponzmteslagunupgraded))
+{
+	arrayinsert(a_keys, level.weaponzmteslagun, 0); // Forces the Wunderwaffe to slot 0
+	level.var_12d3a848 = 0; // Resets the Box Hits counter
+}
+```
+
+### **Revelations Apothicon Servant**
+If the box has moved locations at least once (`level.chest_moves > 0`), the game tracks your Box Hits without getting the **Apothicon Servant** (`idgun_genesis_0`). Instead of being a percentage based, like the previous ones, the game increases your odds by adding extra copies of the **Apothicon** into the weapon list:
+* **1 to 6 Box Hits**: Completely random with no weighting functions applied.
+* **7 to 12 Box Hits**: Adds an extra copy of `idgun_genesis_0` into the weapon list, **doubling** your chances of obtaining it.
+* **Anything higher than 12 Box Hits**: Adds another copy of `idgun_genesis_0` into the list, **tripling** your chances of obtaining it.
+
+*Note: The Apothicon Servant also benefits from the [Broken Randomize Function](#broken-randomize-function), making it even easier to obtain.*
+
+#### - From `zm_genesis.gsc`:
+```gsc
+if(level.var_f06c86b9 > 12)
+{
+	a_keys[a_keys.size] = level.idgun_weapons[0]; // Adds an extra copy
+}
+if(level.var_f06c86b9 > 6)
+{
+	a_keys[a_keys.size] = level.idgun_weapons[0]; // Adds an extra copy
+	a_keys = array::randomize(a_keys); // Shuffles the entire pool
+}
+```
+
+
+---
+
 # TODO
 
 Zombies Health behavior from round 112+ // TODO
-
-function randomize // TODO
 
 Turned Army // TODO
 
