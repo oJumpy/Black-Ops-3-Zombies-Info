@@ -560,9 +560,9 @@ Other Notes:
 
 As of **20/04/2026** 
 
-#### - What causes the leak?
-* **Gauntlet**
-  1 - The Gauntlet stores its visual effects, like the blue glow from the punch and green fire for the dragon, in **arrays**.
+### - What causes the leak?
+#### 1 - **Gauntlet**:
+  - The Gauntlet stores its visual effects, like the blue glow from the punch and green fire for the dragon, in **arrays**.
   Every time you pull the Gauntlet out or change its ability between punch and flamethrower, you are permanently adding FXs to this “list”.
   Their effects are handled in `_zm_weap_dragon_gauntlet.csc`, in the `function_3011ccf6` function.
 
@@ -570,10 +570,47 @@ As of **20/04/2026**
 
   The Flamethrower instead, “just” adds 4 FXs every time you pull it out, permanently, but actually using the flamethrower seems to be safe
 
-* **Valks**
-  2 - Valkyries are definitely the main cause of the freeze, but it's specifically because of two different bugs:
+#### 2 - **Valks**:
+  - Valkyries are definitely the main cause of the freeze, but it's specifically because of two different bugs:
   * **The Shock / Beam Attack:** When a valk locks onto you, it fires an electric beam, which it applies a “Target FX” to whatever it is shocking, if you **kill** the valk while it’s actively shocking something, the script fails to delete the “Target FX” leaving it orphaned permanently.
-  * **The Arms/Plates Dynamic Entities:** When you shoot off a valk’s arm, faceplate (i believe camera too seems to be an entity that can fall, not too sure though), it falls to the ground as a dynamic physics entity `dynEnt`. The code is supposed to clean up this entity once the piece hits the floor, however, it only cleans up the piece if it falls **less** than 15 units (inches), which I believe is a typo. 
+In `_sentinel_drone.csc`:
+```gsc
+function sentinel_drone_deathfx( localClientNum, oldVal, newVal, bNewEnt, bInitialSnap, fieldName, bWasTimeJump )
+{	
+	settings = struct::get_script_bundle( "vehiclecustomsettings", "sentinel_drone_settings" );
+	
+	if( isdefined( settings ) )
+	{
+		if( newVal )
+		{
+			handle = PlayFX( localClientNum, settings.drone_secondary_death_fx_1, self.origin );
+			SetFXIgnorePause( localClientNum, handle, true );
+			
+			//Turn off the beam target FX
+			if(isdefined(self.beam_target_fx) && isdefined(self.beam_target_fx[localClientNum]))
+			{
+				StopFX(localClientNum, self.beam_target_fx[localClientNum]);
+				self.beam_target_fx[localClientNum] = undefined;
+			}
+		}
+	}
+}
+```
+  * **The Arms/Plates Dynamic Entities:** When you shoot off a valk’s arm, faceplate (i believe camera too seems to be an entity that can fall, not too sure though), it falls to the ground as a dynamic physics entity `dynEnt`. The code is supposed to clean up this entity once the piece hits the floor, however, it only cleans up the piece if it falls **less** than 15 units (inches), which I believe is a typo.
+In `_sentinel_drone.csc`, function `sentinel_launch_piece`:
+```gsc
+			if(count == 5)
+			{
+				if( posHeight - dynEnt.origin[2] < 15)
+				{
+					SetDynEntEnabled(dynEnt, false);
+				}
+				else
+				{
+					break;
+				}
+			}
+```
   Since valks hover further than that, meaning the script hits the `else` block, breaks the loop, just abandons those entities and these invisible dynamic entities stay active on the map forever.
 
 15 Units btw… <br>
