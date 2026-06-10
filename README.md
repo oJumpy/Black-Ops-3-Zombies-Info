@@ -1387,16 +1387,17 @@ This means you are almost **twice as likely** to roll an SVG compared to rolling
 
 Out of the 14 maps, only 4 are affected by weighted mystery box functions. 
 * [Zetsubou No Shima KT-4](#zetsubou-no-shima-kt-4)
-* [Gorod Krovi Mark 3 & Verrückt Wunderwaffe DG-2](#gorod-krovi-mark-3--verruckt-wunderwaffe-dg-2)
+* [Gorod Krovi Mark 3 & Verrückt Wunderwaffe DG-2](#gorod-krovi-mark-3--verrückt-wunderwaffe-dg-2)
 * [Revelations Apothicon Servant](#revelations-apothicon-servant)
 
 ### **Zetsubou No Shima KT-4**
-The KT-4 (`hero_mirg2000`) is weighted. When a player trades the KT-4, the game tracks your Box Hits to increase the forced percentage chance of obtaining it:
-* **1st Box Hit** after trading it: **10%** chance to obtain it.
-* **2nd Box Hit**: **10%** chance.
-* **3rd Box Hit**: **30%** chance.
-* **4th Box Hit**: **60%** chance.
-* **5th+ Box Hit**: Drops back to **10%** chance.
+The KT-4 (`hero_mirg2000`) is weighted. When a player trades the KT-4, the game tracks your Box Hits to increase the forced percentage chance of obtaining it.<br>
+Because the forced weighting actually stacks on top of the default box odds, your actual odds are slightly higher. Additionally, because the game uses `randomint(100) <= n_chance` for its random probability checks, the engine rolls an integer from 0 to 99, gaining an extra 1% chance. Stacking these with the base odds the true percentages are these:
+* **1st Box Hit** after trading it: **~14.5%** (11% + 3.5% default odds).
+* **2nd Box Hit**: **~14.5%**.
+* **3rd Box Hit**: **~34.5%** (31% + 3.5% default odds).
+* **4th Box Hit**: **~64.5%** (61% + 3.5% default odds).
+* **5th+ Box Hit**: Drops back to **~13.2%**.
 
 #### - From `zm_island_ww_quest.gsc`:
 ```gsc
@@ -1434,9 +1435,17 @@ function function_659c2324(a_keys)
 
 ### **Gorod Krovi Mark 3 & Verrückt Wunderwaffe DG-2**
 For their respective Wonder Weapons, `zm_stalingrad` and `zm_asylum` both use the exact same weighting function. The game tracks your Box Hits to gradually increase your percentage chance of obtaining the Wonder Weapon:
-* **1 to 12 Box Hits**: **5%** chance.
-* **13 to 17 Box Hits**: Increases to **8%** chance.
-* **Anything higher than 17 Box Hits**: **12%** chance.
+Because the forced weighting actually stacks up to the default box odds, also Gorod Krovi has a much smaller base weapon list (23 weapons) than Verrückt (35 weapons), makes the Mark 3 easier to obtain. Additionally, because the game uses `randomint(100) <= n_chance` for its random probability checks, the engine rolls an integer from 0 to 99, gaining an extra 1% chance. Stacking these with the base odds the true percentages are these:
+#### **Gorod Krovi Mark 3 actual odds:**
+* **1 to 12 Box Hits**: **~10%** (Forced chance 6% + ~4% default odds).
+* **13 to 17 Box Hits**: **~13%** (Forced chance 9% + ~4% default odds).
+* **18+ Box Hits**: **~17%** (Forced chance 13% + ~4% default odds).
+
+#### **Verrückt Wunderwaffe DG-2 actual odds:**
+* **1 to 12 Box Hits**: **~9.3%** (Forced chance 6% + 3.3% default odds).
+* **13 to 17 Box Hits**: **~12.3%** (Forced chance 9% + 3.3% default odds).
+* **18+ Box Hits**: **~16.3%** (Forced chance 13% + 3.3% default odds).
+
 
 #### - From `zm_stalingrad.gsc` (Gorod Krovi) in `function_659c2324`:
 ```gsc
