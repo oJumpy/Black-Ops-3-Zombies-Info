@@ -74,6 +74,7 @@
   - [Trap Immunity / Panzer Flame Glitch](#trap-immunity--panzer-flame-glitch)
   - [Broken Randomize Function](#broken-randomize-function)
   - [Weighted Weapons](#weighted-weapons)
+  - [Shadows of Evil Pods odds](#shadows-of-evil-pods-odds)
   - [TODO](#todo)
 
 ---
@@ -1521,6 +1522,375 @@ if(level.var_f06c86b9 > 6)
 
 ---
 
+### Shadows of Evil Pods odds
+
+- initially roughly **40% of all valid pod locations** are spawned
+- later after `between_round_over` fires **3 to 5 pods spawn**, this is skipped for rounds 1-3 if no player has a fumigator
+
+In `zm_zod_pods.gsc`:
+```gsc
+function private respawn_fungus_pods()
+{
+	level flag::wait_till("start_zombie_round_logic");
+	for(i = 0; i < level.fungus_pods.a_e_unspawned.size; i++)
+	{
+		e_pod = level.fungus_pods.a_e_unspawned[i];
+		e_pod.zone = zm_zonemgr::get_zone_from_position(e_pod.origin + vectorscale((0, 0, 1), 20), 1);
+		if(!isdefined(e_pod.zone))
+		{
+			/#
+				println(("" + zm_zod_util::vec_to_string(e_pod.origin)) + "");
+			#/
+			arrayremovevalue(level.fungus_pods.a_e_unspawned, e_pod);
+		}
+	}
+	n_pods = int(0.4 * level.fungus_pods.a_e_unspawned.size);
+	spawn_fungus_pods(n_pods);
+	while(true)
+	{
+		level util::waittill_any("between_round_over", "debug_pod_spawn");
+		if(level.round_number < 4 && !level flag::get("any_player_has_pod_sprayer") && (!(isdefined(level.debug_pod_spawn_all) && level.debug_pod_spawn_all)))
+		{
+			continue;
+		}
+		n_pods = randomintrange(3, 6);
+		if(isdefined(level.debug_pod_spawn_all) && level.debug_pod_spawn_all)
+		{
+			n_pods = 1000;
+		}
+		spawn_fungus_pods(n_pods);
+	}
+}
+```
+
+A pod location is skipped during spawn selection if:
+
+| Filter | Value / behavior |
+|---|---|
+| Recently harvested | A pod will not spawn if it was harvested in the last 2 rounds. |
+| Nearby players | A pod will not spawn if any player is within `200` units. |
+| Invalid zone | If the pod cannot be assigned to a zone, it is removed from the pool. |
+| Duplicate zone in small spawn pass | If the requested spawn count is `<= 5`, the script avoids spawning more than one pod in the same zone during that pass. |
+
+#### Pod growth
+
+- each active pod starts its own growth thread (`fungus_pod_upgrade_think`)
+- it checks its growth on `between_round_over`
+- if the pod has a zone, it waits until that zone is enabled before growing
+
+| Check after spawn / last growth | Chance to grow |
+|---:|---:|
+| 1st | 0% |
+| 2nd | 0% |
+| 3rd | 0% |
+| 4th | 25% |
+| 5th | 25% |
+| 6th | 50% |
+| 7th | 50% |
+| 8th and later | 100% |
+
+In `zm_zod_pods.gsc`:
+```gsc
+function private fungus_pod_upgrade_think()
+{
+	self endon(#"harvested");
+	rounds_since_upgrade = 0;
+	if(isdefined(self.zone))
+	{
+		zm_zonemgr::zone_wait_till_enabled(self.zone);
+	}
+	if(level clientfield::get("bm_superbeast"))
+	{
+		self fungus_pod_upgrade(3);
+	}
+	while(true)
+	{
+		level util::waittill_any("between_round_over", "debug_pod_spawn");
+		rounds_since_upgrade++;
+		n_upgrade_odds = level.fungus_pods.upgrade_odds[rounds_since_upgrade];
+		if(!isdefined(n_upgrade_odds))
+		{
+			n_upgrade_odds = 1;
+		}
+		else
+		{
+			if(isdefined(level.debug_pod_spawn_all) && level.debug_pod_spawn_all)
+			{
+				n_upgrade_odds = 1;
+			}
+			else if(n_upgrade_odds == 0)
+			{
+				continue;
+			}
+		}
+		if(randomfloat(1) <= n_upgrade_odds)
+		{
+			self fungus_pod_upgrade();
+			rounds_since_upgrade = 0;
+			if(self.n_pod_level >= 3)
+			{
+				return;
+			}
+		}
+	}
+}
+```
+
+#### Reward roll logic
+
+The columns from `zm_zod_pods.csv` are:
+
+| Column | Meaning |
+|---|---|
+| `ScriptID` | Unique row key. |
+| `Level` | Pod level this reward belongs to: `1`, `2`, or `3`. |
+| `Type` | Reward behavior type. |
+| `Item` | Weapon name, powerup name, or blank for generic behavior. |
+| `Count` | Optional amount, mainly used for bonus points. |
+| `Weight` | Raw reward weight before normalization. |
+
+The script groups rows by `Level`, then normalizes enabled rewards: `chance = reward_weight / total_enabled_weight_for_that_level * 100`. During harvest, it rolls: `n_roll = randomint(100)` and walks through the current level’s rewards cumulatively until one reward bucket matches.
+
+In `zm_zod_pods.gsc`:
+```gsc
+function harvest_fungus_pod(e_harvester)
+{
+	self.model clientfield::increment("pod_harvest");
+	e_harvester thread zm_audio::create_and_play_dialog("sprayer", "use");
+	wait(0.1);
+	self.harvested_in_round = level.round_number;
+	zm_unitrigger::unregister_unitrigger(self.trigger);
+	self.trigger = undefined;
+	self notify(#"harvested", e_harvester);
+	var_785a5f87 = self.n_pod_level;
+	self.n_pod_level = 0;
+	self.model clientfield::set("update_fungus_pod_level", self.n_pod_level);
+	wait((getanimlength(("p7_fxanim_zm_zod_fungus_pod_stage" + var_785a5f87) + "_death_bundle")) - 0.5);
+	e_harvester recordmapevent(24, gettime(), self.origin, level.round_number, var_785a5f87);
+	level notify(("pod_" + self.script_int) + "_harvested");
+	n_roll = randomint(100);
+	n_cumulation = 0;
+	var_68a89987 = 0;
+	foreach(s_reward in level.fungus_pods.rewards[var_785a5f87])
+	{
+		/#
+			str_forced = getdvarstring("");
+			if(isdefined(str_forced) && str_forced != "")
+			{
+				s_reward_forced = 1;
+				s_reward = level.fungus_pods.debug_reward_list[str_forced];
+				setdvar("", "");
+			}
+		#/
+		if(s_reward.type == "weapon")
+		{
+			s_reward.do_not_consider = function_b0138b1(s_reward.item);
+		}
+		if(isdefined(s_reward.do_not_consider) && s_reward.do_not_consider)
+		{
+			continue;
+		}
+		n_cumulation = n_cumulation + s_reward.chance;
+		if(n_cumulation >= n_roll || (isdefined(s_reward_forced) && s_reward_forced))
+		{
+			var_68a89987 = 1;
+			switch(s_reward.type)
+			{
+				case "craftable":
+				{
+					s_reward.do_not_consider = 1;
+					normalize_reward_chances();
+					playsoundatposition("evt_zod_pod_open_craftable", self.origin);
+					drop_point = self.origin + vectorscale((0, 0, 1), 36);
+					zm_zod_idgun_quest::special_craftable_spawn(drop_point, "part_skeleton");
+					if(level flag::get("part_skeleton" + "_found"))
+					{
+						break;
+					}
+					else
+					{
+						mdl_part = level zm_craftables::get_craftable_piece_model("idgun", "part_skeleton");
+						var_55d0f940 = struct::get("safe_place_for_items", "targetname");
+						mdl_part.origin = var_55d0f940.origin;
+						s_reward.do_not_consider = 0;
+						normalize_reward_chances();
+					}
+					break;
+				}
+				case "grenade":
+				{
+					v_spawnpt = self.origin;
+					grenade = getweapon("frag_grenade");
+					n_rand = randomintrange(0, 4);
+					e_harvester magicgrenadetype(grenade, v_spawnpt, vectorscale((0, 0, 1), 300), 3);
+					playsoundatposition("evt_zod_pod_open_grenade", self.origin);
+					if(n_rand)
+					{
+						wait(0.3);
+						if(math::cointoss())
+						{
+							e_harvester magicgrenadetype(grenade, v_spawnpt, vectorscale((0, 0, 1), 300), 3);
+						}
+					}
+					break;
+				}
+				case "parasite":
+				{
+					if(isdefined(e_harvester))
+					{
+						array::add(level.a_wasp_priority_targets, e_harvester);
+					}
+					s_temp = spawnstruct();
+					s_temp.origin = self.origin + vectorscale((0, 0, 1), 30);
+					var_b20468d0 = zm_ai_wasp::special_wasp_spawn(1, s_temp, 32, 32, 1, 1, 1);
+					if(!ispointinnavvolume(var_b20468d0.origin, "navvolume_small"))
+					{
+						v_nearest_navmesh_point = var_b20468d0 getclosestpointonnavvolume(s_temp.origin, 100);
+						if(isdefined(v_nearest_navmesh_point))
+						{
+							var_b20468d0.origin = v_nearest_navmesh_point;
+						}
+					}
+					break;
+				}
+				case "powerup":
+				{
+					str_item = s_reward.item;
+					while(!isdefined(str_item) || (str_item === "full_ammo" && var_785a5f87 != 3))
+					{
+						str_item = zm_powerups::get_valid_powerup();
+					}
+					if(isdefined(s_reward.count) && str_item == "bonus_points_team")
+					{
+						level.fungus_pods.bonus_points_amount = s_reward.count;
+					}
+					zm_powerups::specific_powerup_drop(str_item, self.origin, undefined, undefined, 1);
+					break;
+				}
+				case "weapon":
+				{
+					playsoundatposition("evt_zod_pod_open_weapon", self.origin);
+					self thread dig_up_weapon(e_harvester, s_reward.item);
+					break;
+				}
+				case "zombie":
+				{
+					s_temp = spawnstruct();
+					s_temp.origin = function_c9466e61(self.origin, 20);
+					if(!isdefined(s_temp.origin))
+					{
+						s_temp.origin = self.origin;
+					}
+					s_temp.script_noteworthy = "riser_location";
+					s_temp.script_string = "find_flesh";
+					zombie_utility::spawn_zombie(level.zombie_spawners[0], "aether_zombie", s_temp);
+					break;
+				}
+				case "shield_recharge":
+				{
+					v_origin = function_c9466e61(self.origin, 20);
+					var_7905adb2 = rocketshield::create_bottle_unitrigger(v_origin, (0, 0, 0));
+					var_7905adb2 thread function_92f587b4();
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+			break;
+		}
+	}
+	if(!var_68a89987)
+	{
+		str_item = zm_powerups::get_valid_powerup();
+		zm_powerups::specific_powerup_drop(str_item, self.origin, undefined, undefined, 1);
+	}
+	arrayremovevalue(level.fungus_pods.a_e_spawned, self);
+	if(!isdefined(level.fungus_pods.a_e_unspawned))
+	{
+		level.fungus_pods.a_e_unspawned = [];
+	}
+	else if(!isarray(level.fungus_pods.a_e_unspawned))
+	{
+		level.fungus_pods.a_e_unspawned = array(level.fungus_pods.a_e_unspawned);
+	}
+	level.fungus_pods.a_e_unspawned[level.fungus_pods.a_e_unspawned.size] = self;
+}
+```
+
+##### Dynamic reward disabling
+
+Some rewards can be disabled or skipped at runtime:
+
+| Reward | Runtime behavior |
+|---|---|
+| `shield_recharge` | Disabled until `shield_built`. |
+| `weapon` | Skipped if an alive player already has that weapon base or an upgraded form. |
+| `craftable` | The Apothicon Servant part reward is marked used after a successful drop, then the table is normalized again. |
+| `full_ammo` from generic powerup logic | Only allowed for level 3 pods. |
+| No selected reward | Falls back to a generic valid powerup. |
+
+#### Reward types
+
+| Type | Behavior |
+|---|---|
+| `powerup` | Drops a specific powerup if `Item` is set, otherwise uses generic valid powerup logic. `bonus_points_team` uses `Count` as the points amount. |
+| `weapon` | Spawns a temporary weapon pickup above the pod. |
+| `parasite` | Spawns a parasite near the pod. |
+| `zombie` | Spawns a zombie near the pod. |
+| `grenade` | Throws at least one frag grenade from the pod, with a chance for an additional grenade. |
+| `shield_recharge` | Spawns a rocket shield recharge bottle. |
+| `craftable` | Spawns the Apothicon Servant part. |
+
+#### Default reward probabilities from this CSV
+
+The tables below show the default normalized chances if none are disabled. To recalculate the chance see [Reward roll logic](#reward-roll-logic). For example the chance for a powerup from a mature pod with `L3_raygun` and `L3_idgun_part` disabled are `34 / (34 + 20 + 10 + 12 + 8 + 15 + 10) * 100 = 31,19%` instead of `24.82%`.
+
+##### Level 1 — small pod
+
+| ScriptID | Type | Item | Count | Weight | Default chance |
+|---|---|---|---:|---:|---:|
+| `L1_powerup` | `powerup` |  |  | 30 | 16.22% |
+| `L1_pistol_revolver38` | `weapon` | `pistol_revolver38` |  | 25 | 13.51% |
+| `L1_pistol_burst` | `weapon` | `pistol_burst` |  | 15 | 8.11% |
+| `L1_sniper_fastbolt` | `weapon` | `sniper_fastbolt` |  | 15 | 8.11% |
+| `L1_parasite` | `parasite` |  |  | 30 | 16.22% |
+| `L1_zombie` | `zombie` |  |  | 30 | 16.22% |
+| `L1_grenade` | `grenade` |  |  | 30 | 16.22% |
+| `L1_shield_recharge` | `shield_recharge` |  |  | 10 | 5.41% |
+
+##### Level 2 — medium pod
+
+| ScriptID | Type | Item | Count | Weight | Default chance |
+|---|---|---|---:|---:|---:|
+| `L2_powerup` | `powerup` |  |  | 22 | 14.86% |
+| `L2_points_200` | `powerup` | `bonus_points_team` | 200 | 8 | 5.41% |
+| `L2_shotgun_pump` | `weapon` | `shotgun_pump` |  | 15 | 10.14% |
+| `L2_pistol_fullauto` | `weapon` | `pistol_fullauto` |  | 15 | 10.14% |
+| `L2_smg_standard` | `weapon` | `smg_standard` |  | 10 | 6.76% |
+| `L2_parasite` | `parasite` |  |  | 20 | 13.51% |
+| `L2_grenade` | `grenade` |  |  | 20 | 13.51% |
+| `L2_zombie` | `zombie` |  |  | 20 | 13.51% |
+| `L2_points_500` | `powerup` | `bonus_points_team` | 500 | 8 | 5.41% |
+| `L2_shield_recharge` | `shield_recharge` |  |  | 10 | 6.76% |
+
+##### Level 3 — mature pod
+
+| ScriptID | Type | Item | Count | Weight | Default chance |
+|---|---|---|---:|---:|---:|
+| `L3_powerup` | `powerup` |  |  | 34 | 24.82% |
+| `L3_points_1000` | `powerup` | `bonus_points_team` | 1000 | 20 | 14.60% |
+| `L3_firesale` | `powerup` | `fire_sale` |  | 10 | 7.30% |
+| `L3_raygun` | `weapon` | `ray_gun` |  | 3 | 2.19% |
+| `L3_smg_sten` | `weapon` | `smg_sten` |  | 12 | 8.76% |
+| `L3_shotgun_fullauto` | `weapon` | `shotgun_fullauto` |  | 8 | 5.84% |
+| `L3_ar_damage` | `weapon` | `ar_damage` |  | 15 | 10.95% |
+| `L3_shield_recharge` | `shield_recharge` |  |  | 10 | 7.30% |
+| `L3_idgun_part` | `craftable` |  |  | 25 | 18.25% |
+
+---
+
 # TODO
 
 Zombies Health behavior from round 112+ // TODO
@@ -1530,8 +1900,6 @@ Turned Army // TODO
 Danger Closest Gum invulnerability from flogger in coop // TODO
 
 Gondola odds Der Eisendrache // TODO
-
-Pods odds Shadows of Evil // TODO
 
 Napalm Freeze // TODO
 
