@@ -331,14 +331,14 @@ Rounds where the **Bows** kills zombies properly:
 </h1>
 
 ## Rags Slams / Nade Swap / Nade Cancel Error:
-- **NOT** *the same as Grenade / Widows CI Error -*
+ *- **NOT** the same as Grenade / Widows CI Error -*
 
 (Co-Op & Solo)
-This is a **different error** from the usual **Nade Error / Widows Wine CI**.
-The “Nade Error” is caused when you **SUCCESSFULLY** throw equipment.
+This is a **different error** from the standard **Throwable Equipment Error**. 
+The "Throwable Equipment Error" is caused when you **SUCCESSFULLY** throw equipment. This error, however, is caused by cancelling the throw or rags slams.
 
 ### - What Causes This CI Error
-Every time you **slam** with **Ragnarok DG-4**, **cancel** a grenade throw or **nade swap**, the game creates two threads that never get cleaned up. The game increases the **Child GSC** variable.
+Every time you **slam** with **Ragnarok DG-4**, **cancel** a grenade throw or **nade swap**, the game notifies `grenade_pullback` on the player. This creates two threads that never get cleaned up, permanently leaked in the **Child GSC** Pool.
 
 The `beginGrenadeTracking()` thread (waiting for `grenade_fire`)
 
@@ -347,7 +347,7 @@ The `watchGrenadeCancel()` thread (waiting for `grenade_fire`)
 After ~**3000 rags slams/nade swaps**, you have ~6000+ stuck threads. The **Child GSC variable** tracks active threads and crashes when it reaches ~130,000.
 
 ### - The Fix
-**Fully throw ONE grenade, monkey, or trip mine every round to keep it simple or every ~1000/~2000 slams/swaps. That's it.**
+**Fully throw ONE grenade, monkey, or trip mine every round to keep it simple or every ~1000/~2000 slams/swaps (or less). That's it.**
 
 When you fully throw a grenade, the game finally triggers `grenade_fire`, and every waiting thread will terminate.
 
@@ -367,7 +367,20 @@ When you fully throw a grenade, the game finally triggers `grenade_fire`, and ev
 ---
 
 ## Throwable Equipment Error
-- *This will **NOT** work for solo -*
+*- This will **NOT** work for solo -*
+
+### What causes the leak?
+When any player successfully throws a grenade or equipment, GSC threads tracking loops directly on the spawned projectile entity
+```gsc
+grenade thread checkGrenadeForDud( weapon, true, self );
+grenade thread watchForScriptExplosion( weapon, true, self );
+```
+When the projectile explodes, the game deletes the grenade entity. Because the grenade is gone, the main tracking thread on it is instantly killed.
+But because the thread was killed so abruptly, **it never gets to run its cleanup code** (which is supposed to tell the player-scoped thread to stop).
+As a result, the thread on the player, along with the temporary variables and structs, created inside the functions, are left permanently stuck, permanently leaked.
+
+### - Why off-host players Leaving the Game Clears It?
+When a non-host player disconnects, the server completely deletes their GSC player entity. This triggers a full memory cleanup of that player, which automatically wipes out all of their stuck threads and variables from the server.
 
 Only works for non-host players. If you’re off-host, you can throw equipment, but you must leave the game afterward to clear up threads.
 
