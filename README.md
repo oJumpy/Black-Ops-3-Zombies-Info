@@ -370,14 +370,19 @@ When you fully throw a grenade, the game finally triggers `grenade_fire`, and ev
 *- This will **NOT** work for solo -*
 
 ### What causes the leak?
-When any player successfully throws a grenade or equipment, GSC threads tracking loops directly on the spawned projectile entity
+When a player successfully throws a grenade or equipments, GSC starts tracking threads on the spawned projectile:
 ```gsc
 grenade thread checkGrenadeForDud( weapon, true, self );
-grenade thread watchForScriptExplosion( weapon, true, self );
 ```
-When the projectile explodes, the game deletes the grenade entity. Because the grenade is gone, the main tracking thread on it is instantly killed.
-But because the thread was killed so abruptly, **it never gets to run its cleanup code** (which is supposed to tell the player-scoped thread to stop).
-As a result, the thread on the player, along with the temporary variables and structs, created inside the functions, are left permanently stuck, permanently leaked.
+Inside this function, GSC calls a multi-entity wait function (`waittill_any_ex`) to wait for events on both the grenade (its "death") and the player (such as "zombify").
+
+To do this, the game spawns a temporary control struct (`s_common`) and starts helper threads on both entities:
+1. A thread on the **grenade** waiting for `"death"`
+2. A thread on the **player** waiting for `"zombify"` (`player thread waittill_string(...)`)
+
+When the grenade explodes, the grenade entity is deleted. Because the entity is gone, the tracking thread running on the grenade is instantly killed by the engine. 
+
+Because the thread was terminated while running, **it never gets to tell the thread attached to the player to stop**. As a result, the `waittill_string` thread on the player remains permanently stuck waiting for an event, keeping the temporary variables and helper structs leaked in memory.
 
 ### - Why off-host players Leaving the Game Clears It?
 When a non-host player disconnects, the server completely deletes their GSC player entity. This triggers a full memory cleanup of that player, which automatically wipes out all of their stuck threads and variables from the server.
