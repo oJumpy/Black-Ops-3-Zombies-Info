@@ -54,10 +54,6 @@
 
 ---
 
-**[GK Freeze Detailed By Kxg124](#gk-freeze-detailed-by-kxg124)**
-
----
-
 **[25 Day Error Bypass](#25-day-error-bypass)**
 
 ---
@@ -541,40 +537,7 @@ Because at the top of `do_zombie_rise()` registers `self endon("death");`, killi
 ---
 
 # Gorod Krovi Freeze
-Gorod Krovi Error, is Child CSC based, which has an overflow of 65000, once that’s reached the game will freeze. It is still unknown what 100% is the root cause of it.
-
-#### - How to Avoid the Crash
-With current knowledge, we know that Valks are mainly the cause of the Freeze, so you want to try to kill as few as possible.
-Based on some real games that made it to 255, it is possible to still kill valks, so you don't have to strictly avoid killing them at all times. Just be careful not to kill too many.
-
-#### - Playstyle Recommendations
-These are strategies kxg uses and suggests all players do to ensure reaching round 255:
-* Only use **Dead Wire** and **Turned**
-* Only use the **MK3 until ~round 50**
-* **DO NOT** go overboard spamming the left slowdown shot of the MK3 (this will increases your CI variable)
-
-Shield Usage:
-* **Always aim DOWN** when using the shield
-* **NEVER blast** if a valk is right next to you
-
-Turned Army (Round 159+):
-* Avoid making more than **~6 turned army** on the map at one time
-* More turned army = faster the CSC variable tends to increase
-* You can EITHER:
-  * Blast valks for most of the game carelessly and have ~4 turned army all game after 159+
-  * OR be very careful blasting valks ALL GAME to be allowed 8+ turned on the map safely
-* *(This still needs more testing for conclusive answers)*
-
-Instakill/Death Machine Usage:
-* Do **NOT** carelessly shoot on instakill/death machines when avoiding valk kills
-* Electric Cherry **will** kill valks when instakill is active
-* Death machine usage should **never** be used on valks, and ideally not on manglers
-* Use Electric Cherry on manglers during instakill instead of shooting them directly ![](images/image1.png)
-
-Other Notes:
-* The shield melee bash on instakill *might* also increase the variable (unconfirmed)
-* **NEVER** use the gauntlet or flamethrower unless required for Easter Egg steps
-* The gauntlet punch **RAPIDLY** increases CSC variable
+Gorod Krovi Error, is Child CSC based, which has an overflow of 65000, once that’s reached the game will freeze.
 
 As of **20/04/2026** 
 
@@ -640,9 +603,8 @@ So you can actually safely kill valks, with shield blast, but you have to be car
 #### - Suggestions
 Kill valks as soon as they enter the bunker, while they are just hovering or moving.
 If they start the “Charge” for the attack, you can still kill them within that window.
-If they start zapping, you **DO NOT** kill them, wait about a second or two, for any zap to finish.
+If they start zapping, you **DO NOT** kill them, wait about a second or two, for any zap to finish. <br>
 Killing manglers seems to actually be safe, they don’t seem to be leaking anything in CSC
-
 
 ---
 
@@ -719,51 +681,6 @@ What each tracker shows:
 **MAX number**: Highest value the tracker has read for that variable
 
 **Important**: The tracker doesn't update instantly. If you see the variable spike, it doesn't mean the last 5 seconds caused it. Look at the bigger picture of actions taken.
-
----
-
-## GK Freeze Detailed By Kxg124
-
-Things kxg avoids that he suggests all players do in order to ensure a 255 first try:
-- Only use deadwire and turned
-- Only use the mk3 until ~50. Do not go overboard spamming the left slowdown shot as that is a known way to rapidly increase your CI variable. People have been able to CI prior to 100 doing this.
-- Aim DOWN when using the shield. NEVER blast if a valk is kissing you, any part of you
-- 159+ turned army: Avoid making more than ~6 turned army on the map at one time. The more turned army on the map = faster the variable tends to increase. You can EITHER blast valks for the majority of the game carelessly and have ~4 turned army all game once on 159+ OR be very careful blasting valks ALL GAME in order to be allowed to have 8+ turned on the map safely. (This point still needs to be tested more in order to give a more conclusive answer, but in the megas science game that was played the more turned army = faster rate for variable increase)
-- Do NOT carelessly shoot on instakill/death machines when trying to avoid valk kills. Electric cherry will kill valks when insta kill is active, but valks will ignore insta kill on valk rounds. (The valk health function seems to not be the same on valk rounds since the insta kill drop does not work properly on valk rounds.) ![](images/image1.png)
-- I have been told that using the melee bash of the shield on insta kill is also a potential issue for variable increase, but this is unconfirmed.
-- NEVER use the gauntlet or flamethrower unless required for the easter egg step. The punch from the gauntlet RAPIDLY increases csc variable.
-
-_____
-
-How the error tracker works:
-
-There seems to be some misunderstanding regarding the tracker bo3 players have for errors. 
-
-![](images/image8.png)
-
-The above image is an example of information the error tracker can display. 
-
-The child GSC relates to the CI (Connection Interrupted) error that is mostly associated with widows wine usage. Other items such as rag slams, kt4 kills, and the slow down shot of the ray gun mk3 can also directly increase this variable. 
-
-The **Child CSC** is the error related to the **GK Freeze** directly. Several misc things can contribute to this variable increasing by a wide range. 
-
-MemTree is not something seen to be an issue on Bo3 (as of yet), but kxg had it open in his megas 255 just to track.
-
-Hitmarkers (for GK at least) are broken on the tracker and can be ignored
-
-Valk counter was largely accurate, but not 100%. Small things such as going to pap changed the value for the counter, along with other small misc events in the game, but not nearly to the point where the value given is not useful. 
-
-**SO HOW DO WE READ THIS INFORMATION???**
-
-The number on the far left is constantly fluctuating. This is the tracker trying to read the most current value for the given variable. The next number (ie: Max: 103943) displays what the tracker has read as the **HIGHEST** value for said variable. The tracker does not update with the highest value instantaneously after doing an action that could directly increase the variable, but it will update frequently enough to show overall progression. What this means is that if you suddenly see the variable spike, it does not mean the action you did in that moment is the direct reason for the variable value increasing. For example, you could be blasting valks for over an hour with the tracker not updating with a new highest value having been read. However, you could be standing still waiting for zombies to get to you and suddenly see the tracker display a new highest variable value being read after said hour. This does NOT mean that you should look at the last 5 seconds of gameplay to see what made the value spike, but rather look at the larger picture of actions taken that could be problematic. 
-
-Testing is still inconclusive to give a 100% definitive answer, however all signs point towards valks being the MAIN contributing factor to avoid interacting with at all cost. This means that when playing, players should avoid damaging and killing valks carelessly. In the countless GK games kxg has played, all of the games that froze early ended because of this. 
-
-In kxg’s classics 255 played at the end of 2020, he went out of his way to play as safe as possible to avoid valks dying. This meant that for the entire game the shield was pointed at the floor in order to control the shield blast to only kill what was directly surrounding the player. Accidental valk kills did still happen, and the player is forced to kill whatever valks are on the map at the end of the round in order to progress. Playing this way is the EXTREME safe way to avoid killing valks as much as possible. (It is also slow, boring as **FUCK**, and means the player cares more about the valk’s lives than their own.) kxg did still make a decent size turned army on 159, and killing valks every now and then to keep the army alive was required. This game was the first EVER to get past 228 in solo, (after kxg getting several 220+ games, and shelby having a 226 and 228 freeze,) with the expectation that this theory of avoiding valk kills would at most avoid freeze until the late 230s/early 240s.kxg was very surprised when he instead got 255 no freeze.
-
-In kxg’s no gum 255 he was a bit more aggressive when killing valks at select points during the game, but the overall playstyle matched the classics. 1-159 was saving valks. 159-180ish valks blasted. 180-230ish valks saved. 230-255 valks blasted.kxg also played an additional ~3 hours to freeze to confirm that the freeze was in fact still just around the corner. 
-
-In the time since kxg’s no gum 255 there have been only 2 more 255s. The first was a classics 255 that shelby/dadwonthugme played that has limited surviving gameplay. I can not speak much regarding the overall playstyle differences, but it is safe to say he was also close to freeze. The only other gk game that made it to 255 without freeze in this time was the megas 255 that kxg played earlier in 2025. Interest in this game came about because of the newly released error tracker that displayed peak values seen for the csc variable. This game was a “science game,” meaning that the point was to see what factors directly correlated with peak spikes for the csc variable increasing. kxg previously played a no jug game where he died on 186 with the tracker displayed, so a baseline estimate of expected variable increase with a playstyle of blasting valks the entire game was already established. kxg tracked the variable on a spreadsheet for every round in the no jug game to see how quickly on average the variable was going up. kxg then did the same thing with the megas 255 on the same spreadsheet to directly compare the rate of the csc variable increasing. The playstyle of the megas 255 was: 1-180 valks were not blasted. Accidental killing along with required blasting to maintain turned army did still occur. The life of valks were more important than the life of the player. 180-200 valks were blasted. 200-210 valks were kept alive. 210-end of game valks were blasted. The full list of the notable events and variable tracking are displayed on this sheet here: https://docs.google.com/spreadsheets/d/1XF08HkgcfjG8eCATmgzAIjjiy_XtfML61BHy-x6Lw0U/edit?usp=sharing ![](images/image1.png)
 
 ---
 
