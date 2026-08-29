@@ -7,11 +7,15 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
+  <a href="https://docs.google.com/spreadsheets/d/1-c85Fazc0h1Swi5EEIgGgTfXB3mFmIOZBzWQkaj7mes/edit?gid=1423684734#gid=1423684734"><img src="https://img.shields.io/badge/Google%20Sheets-Leaderboards%20/%20Averages-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Leaderboards / Solo Averages"></a>
   &nbsp;
   <a href="https://docs.google.com/spreadsheets/d/1z7OWzh2xMY5oA12GQIj3_kdVJOrK0BRunPw0Jy3ND88/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-SPH%20Calculator-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="SPH Calculator"></a>
+</p>
+
+<p align="center">
+  <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
   &nbsp;
-  <a href="https://docs.google.com/spreadsheets/d/1-c85Fazc0h1Swi5EEIgGgTfXB3mFmIOZBzWQkaj7mes/edit?gid=1423684734#gid=1423684734"><img src="https://img.shields.io/badge/Google%20Sheets-Leaderboards%20/%20Averages-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Leaderboards / Solo Averages"></a>
+  <a href="https://docs.google.com/spreadsheets/d/1EHfs-Lb9yy_EahHVTvN8M3QsKiY_X3Prn09-EtJT0d8/edit?gid=601464579#gid=601464579"><img src="https://img.shields.io/badge/Google%20Sheets-All%20CSV%20Data-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="All CSV Data / Weapon Orders"></a>
 </p>
 
 ## Table of Contents
@@ -19,33 +23,37 @@
 * **Setup**
   * [Overlays Crash Warning](#overlays-crash-warning)
   * [Sleep / Hibernate Guide](#sleep--hibernate)
+    * [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
   * [Workshop Mods](#workshop-mods)
-  * [25 Day Error & Bypass](#25-day-error-bypass)
 * **Mechanics & Infos**
   * [AATs (Alternate Ammo Types) & Lucky Crit](#aats-alternate-ammo-types)
   * [Frozen / Torso / Invisible Zombie Rounds](#frozen-rounds)
   * [Weighted Mystery Box Weapons](#weighted-weapons)
-  * [Broken Randomize Function (Box & Gums)](#broken-randomize-function)
+  * [25 Day Error & Bypass](#25-day-error-bypass)
 * **Errors & Crash Limits**
   * [How To Read The Error Tracker (LiveSplit)](#how-to-read-livesplit-error-tracker)
   * [Rags Slams / Nade Swap Error](#rags-slams--nade-swap--nade-cancel-error)
-  * [Throwable Equipment Error (Co-op)](#throwable-equipment-error)
-  * [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)
+  * [Throwable Equipment Error](#throwable-equipment-error)
   * [“Hitmarker” Freeze](#hitmarker-freeze)
+  * [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)
   * [Early Reset / G_Spawn Error](#early-reset--g_spawn)
   * [Shadows of Evil Errors (Sound & G_Spawn)](#shadows-of-evil-errors)
   * [Gorod Krovi Freeze (CSC Leaks)](#gorod-krovi-freeze)
   * [Box Error (GSC Thread Leaks)](#box-error)
+  * [25 Day Error](#25-day-error)
 * **Niche Knowledge**
-  * [Darkness (22-bit Overflow)](#darkness)
+  * [Darkness](#darkness)
+    * [Darkness Video + Images](#darkness-video--images)
   * [Instakill Drop Behavior](#instakill-drop-behavior)
-  * [Bugs/Parasites Pathing on SoE](#bugsparasites-behavior-on-shadows-of-evil)
+  * [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   * [Special Enemies Spawn Delays](#special-enemies-delay)
   * [Der Eisendrache Dogs Health Bug](#der-eisendrache-dogs-health-behavior)
   * [Specialist Charge Rates](#specialist-charge-rate)
   * [Upgraded Sword Behavior](#upgraded-sword-behavior)
   * [Trap Immunity / Panzer Flame Glitch](#trap-immunity--panzer-flame-glitch)
-  * [TODO Section](#todo)
+  * [Broken Randomize Function](#broken-randomize-function)
+  * [Weighted Weapons](#weighted-weapons)
+  * [TODO](#todo)
 
 ---
 
