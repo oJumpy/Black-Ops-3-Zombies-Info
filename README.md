@@ -8,7 +8,7 @@
 
 
 
-# Contents
+# Table of Contents
 
 **[Overlays Warning](#overlays-crash-warning)**
 
@@ -41,6 +41,7 @@
   - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
   - [Throwable Equipment Error](#throwable-equipment-error)
   - [“Hitmarker” Freeze](#hitmarker-freeze)
+  - [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)
   - [Early Reset / G_Spawn](#early-reset--g_spawn)
   - [Shadows of Evil Errors](#shadows-of-evil-errors)
   - [Gorod Krovi Freeze](#gorod-krovi-freeze)
@@ -54,7 +55,8 @@
 
 ---
 
-**[25 Day Error Bypass](#25-day-error-bypass)**
+- **[25 Day Error](#25-day-error)**
+- **[25 Day Error Bypass](#25-day-error-bypass)**
 
 ---
 
@@ -166,7 +168,7 @@ This reduces system load while the game is suspended.
 
 #
 
-### Testing & Choosing What Works **FOR YOU**
+## Testing & Choosing What Works **FOR YOU**
 **Important**: One method will reliably work for your system, but you need to test to determine which one.
 
 1. **Test on Round 1**
@@ -355,10 +357,9 @@ When you fully throw a grenade, the game finally triggers `grenade_fire`, and ev
 * Repeat
 
 ### - Tools to Make This Easier
-* [lveez Debugger](https://github.com/lveez/bo3-debugger/releases/tag/v1)
+* [oJumpy's Debugger](github.com/oJumpy/Bo3-Debugger)
   ![](images/image12.png)
 * [oJumpy’s Livesplit Script](https://github.com/oJumpy/Livesplit-AutoTimers-BOIII) with Child variable monitor
-  Shows the Child value so you can track when to reset.
   
 ---
 
@@ -427,7 +428,7 @@ So i suggest whenever you have thrown 2000 nades, leave and join back the game.
 ### - What Causes the “Hitmarker” Freeze
 While it's still not 100% certain what exactly triggers the freeze, here's what we know:
 
-When the game reaches around **55,000 - 60,000 hitmarkers**, it will eventually **freeze.**
+When the game reaches around **60,000 hitmarkers**, it will eventually **freeze.**
 
 From testing, I believe the issue appears to be in how **attackers and victims interact** during damage feedback
 
@@ -441,8 +442,6 @@ The way we track it is by brute force counting hitmarkers themselves. Since noth
 On **Zetsubou No Shima**, use mostly **Electric Cherry** and **Skull of Nan Sapwe** to kill spiders.
 
 On **Shadows of Evil**, avoid shooting **bugs or meatballs** with bullet weapons.
-
-Avoid using weapons that produce a large amount of hitmarkers to kill the special enemies, that’s what pushes the value toward 55k–60k.
 
 As of **19/04/2026** Recently found out that the vesper and a few other smgs, actually triggers the thread differently, i believe it’s due to how it has a different “type weapon”.
 Because of this some smgs, can actually reach in the 160k hitmarkers
@@ -677,25 +676,67 @@ On a **Classics** or **No Gums** game, this is impossible. You have no way to cl
 
 # Read Error Tracker
 
-### How To Read Livesplit Error Tracker
+## How To Read Livesplit Error Tracker
 
-The tracker displays information like this example:
+### How Values Are Displayed Example:
+```text
+Child GSC: <Current_Value> MAX: <Current_MAX_Value> / <Limit>
+```
+* **Current_Value:** Real-time value actively fluctuating as threads and memory allocate and deallocate.
+* **Current_MAX_Value:** The highest recorded peak value during your session. **This is the main number you want to watch.**
+* **Limit:** The value where the game will crash, freeze, or disconnect.
 
-text
-`Child GSC: <Current_Value> MAX: <Current_MAX_Value> / 130000`
+---
 
-What each tracker shows:
-* **Child GSC**: Relates to CI (Connection Interrupted) errors from Widows Wine, rag slams, KT4 kills, MK3 slowdown shots
-* **Child CSC**: The Gorod Krovi Freeze error - valks and misc actions contribute to this
-* **MemTree**: Not an issue on BO3 yet, but can be tracked for science
-* **Hitmarkers**: Broken on GK tracker (can be ignored)
-* **Valk counter**: Mostly accurate (small things like going to PAP can change the value slightly)
+### 1. Error Trackers
 
-#### - How to Read the Tracker Information
-**Left number**: Constantly fluctuating - tracker reading the most current value
-**MAX number**: Highest value the tracker has read for that variable
+| Tracker | Hard Limit | Crash / Error Result | Related Section |
+| :--- | :---: | :--- | :--- |
+| **Child GSC** | **130,000** | **Connection Interrupted (CI) / Script Variable Overflow.** Leaked by rags slams, nade cancels, off-host nades, skull of nan sapwe, and box hits. | • [Rags Slams / Nade Swap Error](#rags-slams--nade-swap--nade-cancel-error)<br>• [Throwable Equipment Error](#throwable-equipment-error)<br>• [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)<br>• [Box Error](#box-error) |
+| **Child CSC** | **65,000** | **Game Freeze.** Caused by client script variable leaks (Gauntlet FX and Valkyrie bugs on Gorod Krovi). | • [Gorod Krovi Freeze](#gorod-krovi-freeze) |
+| **G-Spawn** | **1,022** | **Kicked with Error: `G_Spawn: no free entities`.** Caused by permanently orphaned `script_origin` anchors when spawn-killing ground spawners. | • [Early Reset / G_Spawn](#early-reset--g_spawn) |
+| **Sound Error** | **3000+(?)** | Game will insta crash / Fatal error (`0xC0000005`) at 0x00007FF7639DEAC8 (0x000000014000EAC8) | • [Shadows of Evil Errors](#shadows-of-evil-errors) |
+| **Hitmarkers** | **~60,000** | **Game Freeze.** Caused by excessive bullet damage feedback on special enemies (spiders, meatballs, bugs). | • [“Hitmarker” Freeze](#hitmarker-freeze) |
+| **Active GSC Threads** | Shared w/ GSC | Tracks active script threads in real time. | |
+| **MemTree** | 130,000 | It's unknown what happens on BO3 when this overflows, it never occurred as far as we know, yet | |
+
+---
+
+### 2. Engine & Reset Trackers
+
+| Tracker | Hard Limit | Description | Related Section |
+| :--- | :---: | :--- | :--- |
+| **`com_frametime`** | **2,147,483,647** | Total engine uptime in milliseconds. Continuously counts up (even while paused) toward the 32-bit signed integer limit. | • [25 Day Error](#25-day-error) |
+| **Frame Timer** | Calculated | Countdown timer (Days, Hours, Minutes) showing how much time you have left before reaching the 24.85 day limit. | • [25 Day Error](#25-day-error) |
+| **Darkness** | **4,194,303** | 22-bit overflow timer tracking map lighting state. Triggers permanent pitch-black screen in specific zones. | • [Darkness](#darkness) |
+| **Reset Value / Timer** | 2,147,483,646 | Engine tick counter and calculated time remaining until general map reset overflow. | |
+| **Entities** | Variable | Total active entities currently loaded on the map. | |
+| **ViewAngles** | ±11,796,490 | Tracks player camera yaw rotation with overflow detection. Aim lag starts happening around ±1,000,000. | |
+
+---
+
+### 3. Counter Trackers
+
+| Tracker | Description | How to Use |
+| :--- | :--- | :--- |
+| **Rags Slams Counter** | Counts total Ragnarok DG-4 slams | When this counter hits **~1,000 to 2,000 slams**, fully throw **1** grenade/monkey/trip mine to clear all stuck tracking threads. |
+| **Nade Counter** | Tracks grenades thrown | Non-host players should leave and rejoin every **~2,000 thrown grenades** to wipe their thread pool. |
+| **Hitmarker Counter & HPH** | Tracks total bullet hits on special enemies and calculates Hitmarkers Per Hour. | Keep total bullet hitmarkers below **60,000** to avoid the freeze on ZnS and SoE. |
 
 **Important**: The tracker doesn't update instantly. If you see the variable spike, it doesn't mean the last 5 seconds caused it. Look at the bigger picture of actions taken.
+
+---
+
+# 25 Day Error
+
+### - What Causes the 25 Day Error (Freeze)
+On every Call of Duty Zombies game prior to Black Ops 4, it starts tracking as soon as you open the game, your game will freeze after roughly **24.85 days**.
+
+This happens because the game engine uses an internal millisecond counter (`com_frametime`) to track uptime. Even when the game is paused, it continuously adds milliseconds towards the **32-bit signed integer limit (`2,147,483,647`)**. Once it reaches roughly 2.147 billion milliseconds (~24.85 days), the integer overflows the game freezes and the game becomes unresponsive.
+
+In LiveSplit:
+* **`com_frametime`** tracks your raw milliseconds out of `2,147,483,647`.
+* **`Frame Timer`** gives you a live countdown showing the exact Days, Hours, Minutes, and Seconds you have left before the freeze happens.
 
 ---
 
