@@ -1,78 +1,45 @@
 <h1 align="center">BO3 Zombies Infos for High Rounders</h1>
 
 <p align="center">
-  <a href="https://docs.google.com/document/d/1_YguF4tDvJxPxoACrdw3tF5WoLf1CRWfu4XE1TIK6VQ/edit?tab=t.wb7xttfpktcl#heading=h.pm0o615drx9w"><img src="https://img.shields.io/badge/Google%20Docs-Main%20Document-grey?style=for-the-badge&logo=googledocs&logoColor=white&labelColor=4285F4" alt="Main Document"></a>
-  &nbsp;&nbsp;&nbsp;
   <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
+	&nbsp;
+  <a href="https://github.com/oJumpy/BOIII-T7-Zombies-AutoTimers"><img src="assets/badge-autotimer.svg" alt="LiveSplit AutoTimer"></a>
+	&nbsp;
+  <a href="https://github.com/oJumpy/Bo3-Debugger"><img src="assets/badge-debugger.svg" alt="BO3 Debugger"></a>
 </p>
 
+## Table of Contents
 
-
-# Table of Contents
-
-**[Overlays Warning](#overlays-crash-warning)**
-
----
-
-**[Sleep / Hibernate](#sleep--hibernate)**
-  - [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
-
----
-
-**[Workshop Mods](#workshop-mods)**
-  - [Strat Tester - Highlight & SPH](#strat-tester---highlight--sph)
-  - [Zombies Community patch](#zombies-community-patch)
-  - [Zombies Community patch 4Modderz](#zombies-community-patch-4modderz)
-  - [Aesthetic Mods](#aesthetic-mods)
-
----
-
-**[AATs (Alternate Ammo Types)](#aats-alternate-ammo-types)**
-  - [Lucky Crit](#lucky-crit)
-
----
-
-**[Frozen/Torso/Invisibles Zombies Rounds](#frozen-rounds)**
-
----
-
-**[Errors](#errors)**
-
-  - [Rags Slams / Nade Swap / Nade Cancel Error](#rags-slams--nade-swap--nade-cancel-error)
-  - [Throwable Equipment Error](#throwable-equipment-error)
-  - [“Hitmarker” Freeze](#hitmarker-freeze)
-  - [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)
-  - [Early Reset / G_Spawn](#early-reset--g_spawn)
-  - [Shadows of Evil Errors](#shadows-of-evil-errors)
-  - [Gorod Krovi Freeze](#gorod-krovi-freeze)
-  - [Box Error](#box-error)
-
----
-
-**[Read Error Tracker](#read-error-tracker)**
-
-  - [How To Read Livesplit Error Tracker](#how-to-read-livesplit-error-tracker)
-
----
-
-- **[25 Day Error](#25-day-error)**
-- **[25 Day Error Bypass](#25-day-error-bypass)**
-
----
-
-**[Niche Knowledge](#niche-knowledge)**
-  - [Darkness](#darkness)
-    - [Darkness Video + Images](#darkness-video--images)
-  - [Instakill Drop Behavior](#instakill-drop-behavior)
-  - [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
-  - [Special Enemies Spawn Delay](#special-enemies-delay)
-  - [Der Eisendrache dogs health behavior](#der-eisendrache-dogs-health-behavior)
-  - [Specialist Charge Rate](#specialist-charge-rate)
-  - [Upgraded Sword Behavior](#upgraded-sword-behavior)
-  - [Trap Immunity / Panzer Flame Glitch](#trap-immunity--panzer-flame-glitch)
-  - [Broken Randomize Function](#broken-randomize-function)
-  - [Weighted Weapons](#weighted-weapons)
-  - [TODO](#todo)
+* **Setup**
+  * [Overlays Crash Warning](#overlays-crash-warning)
+  * [Sleep / Hibernate Guide](#sleep--hibernate)
+  * [Workshop Mods](#workshop-mods)
+  * [25 Day Error & Bypass](#25-day-error-bypass)
+* **Mechanics & Infos**
+  * [AATs (Alternate Ammo Types) & Lucky Crit](#aats-alternate-ammo-types)
+  * [Frozen / Torso / Invisible Zombie Rounds](#frozen-rounds)
+  * [Weighted Mystery Box Weapons](#weighted-weapons)
+  * [Broken Randomize Function (Box & Gums)](#broken-randomize-function)
+* **Errors & Crash Limits**
+  * [How To Read The Error Tracker (LiveSplit)](#how-to-read-livesplit-error-tracker)
+  * [Rags Slams / Nade Swap Error](#rags-slams--nade-swap--nade-cancel-error)
+  * [Throwable Equipment Error (Co-op)](#throwable-equipment-error)
+  * [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)
+  * [“Hitmarker” Freeze](#hitmarker-freeze)
+  * [Early Reset / G_Spawn Error](#early-reset--g_spawn)
+  * [Shadows of Evil Errors (Sound & G_Spawn)](#shadows-of-evil-errors)
+  * [Gorod Krovi Freeze (CSC Leaks)](#gorod-krovi-freeze)
+  * [Box Error (GSC Thread Leaks)](#box-error)
+* **Niche Knowledge**
+  * [Darkness (22-bit Overflow)](#darkness)
+  * [Instakill Drop Behavior](#instakill-drop-behavior)
+  * [Bugs/Parasites Pathing on SoE](#bugsparasites-behavior-on-shadows-of-evil)
+  * [Special Enemies Spawn Delays](#special-enemies-delay)
+  * [Der Eisendrache Dogs Health Bug](#der-eisendrache-dogs-health-behavior)
+  * [Specialist Charge Rates](#specialist-charge-rate)
+  * [Upgraded Sword Behavior](#upgraded-sword-behavior)
+  * [Trap Immunity / Panzer Flame Glitch](#trap-immunity--panzer-flame-glitch)
+  * [TODO Section](#todo)
 
 ---
 
