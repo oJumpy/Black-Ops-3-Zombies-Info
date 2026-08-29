@@ -1,9 +1,9 @@
 <h1 align="center">BO3 Zombies Infos for High Rounders</h1>
 
 <p align="center">
-  <a href="https://github.com/oJumpy/BOIII-T7-Zombies-AutoTimers"><img src="assets/badge-autotimer.svg" alt="LiveSplit AutoTimer"></a>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif" width="119" height="1" alt="" /><a href="https://github.com/oJumpy/BOIII-T7-Zombies-AutoTimers"><img src="assets/badge-autotimer.svg" alt="LiveSplit AutoTimer"></a>
   &nbsp;
-  <a href="https://github.com/oJumpy/Bo3-Debugger"><img src="assets/badge-debugger.svg" alt="BO3 Debugger"></a>
+  <a href="https://github.com/oJumpy/Bo3-Debugger"><img src="assets/badge-debugger.svg" alt="BO3 Debugger"></a><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif" width="62" height="1" alt="" />
 </p>
 
 <p align="center">
@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif" width="64" height="1" alt="" /><a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
   &nbsp;
-  <a href="https://docs.google.com/spreadsheets/d/1EHfs-Lb9yy_EahHVTvN8M3QsKiY_X3Prn09-EtJT0d8/edit?gid=601464579#gid=601464579"><img src="https://img.shields.io/badge/Google%20Sheets-All%20CSV%20Data-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="All CSV Data / Weapon Orders"></a>
+  <a href="https://docs.google.com/spreadsheets/d/1EHfs-Lb9yy_EahHVTvN8M3QsKiY_X3Prn09-EtJT0d8/edit?gid=601464579#gid=601464579"><img src="https://img.shields.io/badge/Google%20Sheets-All%20CSV%20Data-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="All CSV Data / Weapon Orders"></a><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif" width="21" height="1" alt="" />
 </p>
 
 ## Table of Contents
