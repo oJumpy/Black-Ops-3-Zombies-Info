@@ -25,12 +25,12 @@
   * [Sleep / Hibernate Guide](#sleep--hibernate)
     * [Testing & Choosing What Works FOR YOU](#testing--choosing-what-works-for-you)
   * [Workshop Mods](#workshop-mods)
-* **Mechanics & Infos**
+* **Mechanics / Infos**
   * [AATs (Alternate Ammo Types) & Lucky Crit](#aats-alternate-ammo-types)
   * [Frozen / Torso / Invisible Zombie Rounds](#frozen-rounds)
   * [Weighted Mystery Box Weapons](#weighted-weapons)
   * [25 Day Error & Bypass](#25-day-error-bypass)
-* **Errors & Crash Limits**
+* **Errors**
   * [How To Read The Error Tracker (LiveSplit)](#how-to-read-livesplit-error-tracker)
   * [Rags Slams / Nade Swap Error](#rags-slams--nade-swap--nade-cancel-error)
   * [Throwable Equipment Error](#throwable-equipment-error)
