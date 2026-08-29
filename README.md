@@ -455,6 +455,21 @@ Because of this some smgs, can actually reach in the 160k hitmarkers
 
 ---
 
+## Skull of Nan Sapwe Error
+
+### - What Causes The Error
+This error is caused by **putting the Skull of Nan Sapwe away early while zombies are still dying**. 
+
+Starting on **Round 162+** (and [other frozen rounds](https://github.com/oJumpy/Black-Ops-3-Zombies-Info#121-123-127-129-133-135-140-141-143-150-152-153-154-162)), zombies take **1 to 3 seconds** to actually die instead of dying instantly. 
+
+If you put the Skull away **while those zombies are still alive and being killed**, the script stops before cleaning up. This leaves threads permanently stuck. 
+
+### - How To Avoid The Error
+* **Wait 1 to 3 seconds for zombies to die:** On Round 162+ especially, do not put the Skull away while zombies are actively dying.
+* **Manually swap weapons:** Always switch your weapon to put the Skull away rather than letting it do it automatically when at 0%.
+
+---
+
 ## Early Reset / G_spawn
 *(Mostly an issue on ZnS, but it can happen on any map if you spawn kill ground spawners)*
 
@@ -1315,6 +1330,39 @@ Because of the broken **randomize function** and due to the function `GetArrayKe
 On Nacht, weapons coded near the bottom like Ray Gun Mark 2, SVG, Locus, AK and Bootlegger, end up at the front of the list and are the easiest to roll. Weapons coded near the top, like Ray Gun, Thundergun, ICR, end up at the back of the list and are the hardest to obtain.
 
 This means you are almost **twice as likely** to roll an SVG compared to rolling a Thundergun, because of this broken function.
+
+### How it Affects Gobblegums (Pack Order RNG)
+Because of the broken randomize function, the slot where you place a gum in your pack actually matters.
+
+| Lobby Slot | 1st Hit | 2nd Hit | 3rd Hit | 4th Hit | 5th Hit |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Slot 1** | 20.00% | 20.00% | 20.00% | 20.00% | 20.00% |
+| **Slot 2** | **24.19%** | 18.05% | 18.56% | 19.20% | 20.00% |
+| **Slot 3** | 20.99% | **23.04%** | 17.41% | 18.56% | 20.00% |
+| **Slot 4** | 18.43% | 20.48% | **23.04%** | 18.05% | 20.00% |
+| **Slot 5** | 16.38% | 18.43% | 20.99% | **24.19%** | 20.00% |
+
+#### - General Pack Setup Rule:
+* **Slot 2** $\rightarrow$ Favors **1st Hit** (**24.19%**)
+* **Slot 3** $\rightarrow$ Favors **2nd Hit** (**23.04%**)
+* **Slot 4** $\rightarrow$ Favors **3rd Hit** (**23.04%**)
+* **Slot 5** $\rightarrow$ Favors **4th Hit** (**24.19%**)
+* **Slot 1** $\rightarrow$ No Favors (**20.00%** across all)
+
+#### - Loadout Examples:
+
+* **Alchem Strat (Trying to Prevent Overlaps):**
+  We High rounders usually put **Alchems** in **Slot 4** (which is best, but could also use slot 3). 
+  This gives it the highest chance to appear as your **2nd or 3rd Hit**. This makes it so you can hit gum machine while still holding/using an active Alchem, preventing you from getting another one on your very 1st hit and overlapping and wasting it.
+
+* **Safety Setup (ABH & IPS):**
+  On maps where you don't use Alchem, where you rely mostly on **ABH (Anywhere But Here)** and **IPS (In Plain Sight)**, put them in **Slot 3 and Slot 4**. 
+  Same reason as alchems.
+
+* **First-Hit Priority:**
+  If you want a specific gum right away on Round 1, place it in **Slot 2** for the highest chance (**24.19%**) to get it on your very first hit.
+
+
 
 ---
 
