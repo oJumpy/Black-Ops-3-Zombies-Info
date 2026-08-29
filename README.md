@@ -1,11 +1,17 @@
 <h1 align="center">BO3 Zombies Infos for High Rounders</h1>
 
 <p align="center">
-  <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
-	&nbsp;
   <a href="https://github.com/oJumpy/BOIII-T7-Zombies-AutoTimers"><img src="assets/badge-autotimer.svg" alt="LiveSplit AutoTimer"></a>
-	&nbsp;
+  &nbsp;
   <a href="https://github.com/oJumpy/Bo3-Debugger"><img src="assets/badge-debugger.svg" alt="BO3 Debugger"></a>
+</p>
+
+<p align="center">
+  <a href="https://docs.google.com/spreadsheets/d/1tZzWyMXOmVbWzf9ZrgWBRRMjJwL7Xfpze-X9_pz7PpU/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-Reset%20/%20Entities-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Reset/Entities Spreadsheet"></a>
+  &nbsp;
+  <a href="https://docs.google.com/spreadsheets/d/1z7OWzh2xMY5oA12GQIj3_kdVJOrK0BRunPw0Jy3ND88/edit?gid=0#gid=0"><img src="https://img.shields.io/badge/Google%20Sheets-SPH%20Calculator-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="SPH Calculator"></a>
+  &nbsp;
+  <a href="https://docs.google.com/spreadsheets/d/1-c85Fazc0h1Swi5EEIgGgTfXB3mFmIOZBzWQkaj7mes/edit?gid=1423684734#gid=1423684734"><img src="https://img.shields.io/badge/Google%20Sheets-Leaderboards%20/%20Averages-grey?style=for-the-badge&logo=googlesheets&logoColor=white&labelColor=0F9D58" alt="Leaderboards / Solo Averages"></a>
 </p>
 
 ## Table of Contents
