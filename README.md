@@ -470,19 +470,18 @@ Using the Sword Slam **is safe.** It plays an animation first, so it doesn’t i
 ---
 
 ## Shadows of Evil Errors
-### Sound Error
+### Physics Error
 #### - What Causes the Error
-This is what I believe to be a **Sound Error** issue, when a large group of zombies are tightly inside each other (I belive around 15) and die simultaneosly, for example this can happen, from an Apothicon Servant shot when zombies are climbing/jumping from the ground spawner on to the rail during Junction Strategy or it can happen while shooting a Thundergun shot when a large amount of zombies is behing a single barrier, it completely overloads the sound system, causing an instant crash.
+This crash is a **Physics Overflow**. It occurs when a large group of zombies (roughly 15–24) are tightly inside each other and die simultaneously in the exact same coordinates. For example this can happen, from an Apothicon Servant shot when zombies are climbing/jumping from the ground spawner on to the rail during Junction Strategy or it can happen while shooting a Thundergun shot when a large amount of zombies is behind a single barrier, it completely overloads the physics collision system, causing an instant crash.
 
 There's **NO** build up towards this error, it can happen instantly at any point, as long as the conditions are met without warning.
 
 #### - What Happens
-In `_zm_spawner.gsc`, every zombie that dies executes `zombie StopSounds();` on the exact same frame.<br>
-The sound system has to queue up and process each zombie's `StopSounds` command one by one, when these `zombie StopSounds();` commands happen on roughly 15 Zombies, these commands are queued in `SND_QueueAdd` at the same time.<br>
-Because the zombies are basically at the same coordinates, they are identical, forcing the sound manager to sort a massive queue of identical priority sounds.<br>
-These sounds are tracked in the engine's global sound manager inside an array called `voiceAliasHash`. A single zombie can have up to 10 active "voices" running at once in loop.<br>
-To process this active `voiceAliasHash` list, the engine requests a temporary memory block. This block has a hardcoded limit of **`24576 bytes`** which can hold up to **3072 pointers**. <br>
-Because of the sudden spike of identical sounds stopped at the same spot all at once, it exceeds this **3072 Pointers** limit, the allocator fails and returns a `NULL` (0x0) pointer. The game fails to check for this and immediately tries to write to it at `0x14000EAC8` address, causing an instant `0xC0000005` Access Violation crash.
+When these roughly 15 zombies die at the exact same coordinates, the game spawns all their ragdoll collision boxes on the exact same frame.<br>
+Because the zombies are basically at the same spot, their ragdoll limbs overlap inside each other, forcing the physics system to create and sort a massive queue of overlapping collision pairs.<br>
+These collision pairs are tracked in the engine's global physics manager inside the active collision pair list.<br>
+To process this active collision list, the engine requests a temporary memory block. This block has a hardcoded limit of **`24576 bytes`** which can hold up to **3072 pointers**.<br>
+Because of the sudden spike of overlapping ragdolls at the same spot all at once, it exceeds this **3072 Pointers** limit, the allocator fails and returns a `NULL` (0x0) pointer. The game fails to check for this and immediately tries to write to it at `0x14000EAC8` address, causing an instant `0xC0000005` Access Violation crash.
 
 #### - How to Avoid the Crash
 *Can look at pictures to where you can safely shoot*
