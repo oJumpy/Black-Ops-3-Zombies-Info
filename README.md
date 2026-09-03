@@ -37,7 +37,7 @@
   * [“Hitmarker” Freeze](#hitmarker-freeze)
   * [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)
   * [Early Reset / G_Spawn Error](#early-reset--g_spawn)
-  * [Shadows of Evil Errors (Sound & G_Spawn)](#shadows-of-evil-errors)
+  * [Shadows of Evil Errors (Physics & G_Spawn)](#shadows-of-evil-errors)
   * [Gorod Krovi Freeze (CSC Leaks)](#gorod-krovi-freeze)
   * [Box Error (GSC Thread Leaks)](#box-error)
   * [25 Day Error](#25-day-error)
@@ -675,7 +675,7 @@ Child GSC: <Current_Value> MAX: <Current_MAX_Value> / <Limit>
 | **Child GSC** | **130,000** | **Connection Interrupted (CI) / Script Variable Overflow.** Leaked by rags slams, nade cancels, off-host nades, skull of nan sapwe, and box hits. | • [Rags Slams / Nade Swap Error](#rags-slams--nade-swap--nade-cancel-error)<br>• [Throwable Equipment Error](#throwable-equipment-error)<br>• [Skull of Nan Sapwe Error](#skull-of-nan-sapwe-error)<br>• [Box Error](#box-error) |
 | **Child CSC** | **65,000** | **Game Freeze.** Caused by client script variable leaks (Gauntlet FX and Valkyrie bugs on Gorod Krovi). | • [Gorod Krovi Freeze](#gorod-krovi-freeze) |
 | **G-Spawn** | **1,022** | **Kicked with Error: `G_Spawn: no free entities`.** Caused by permanently orphaned `script_origin` anchors when spawn-killing ground spawners. | • [Early Reset / G_Spawn](#early-reset--g_spawn) |
-| **Sound Error** | **3000+(?)** | Game will insta crash / Fatal error (`0xC0000005`) at 0x00007FF7639DEAC8 (0x000000014000EAC8) | • [Shadows of Evil Errors](#shadows-of-evil-errors) |
+| **Physics Error** | **3000+(?)** | Game will insta crash / Fatal error (`0xC0000005`) at 0x00007FF7639DEAC8 (0x000000014000EAC8) | • [Shadows of Evil Errors](#shadows-of-evil-errors) |
 | **Hitmarkers** | **~60,000** | **Game Freeze.** Caused by excessive bullet damage feedback on special enemies (spiders, meatballs, bugs). | • [“Hitmarker” Freeze](#hitmarker-freeze) |
 | **Active GSC Threads** | Shared w/ GSC | Tracks active script threads in real time. | |
 | **MemTree** | 130,000 | It's unknown what happens on BO3 when this overflows, it never occurred as far as we know, yet | |
