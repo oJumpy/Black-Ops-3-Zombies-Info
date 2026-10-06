@@ -1789,7 +1789,7 @@ else if(self.archetype === "zombie")
 - initially roughly **40% of all valid pod locations** are spawned
 - later after `between_round_over` fires **3 to 5 pods spawn**, this is skipped for rounds 1-3 if no player has a fumigator
 
-In https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/zm_zod_pods.gsc`:
+In [`zm_zod_pods.gsc`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/zm_zod_pods.gsc):
 ```gsc
 function private respawn_fungus_pods()
 {
