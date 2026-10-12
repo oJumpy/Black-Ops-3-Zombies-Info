@@ -467,20 +467,32 @@ So i suggest whenever you have thrown 2000 nades, leave and join back the game.
 ## Vehicle Damage (“VD”) RefCount Freeze
 *This was previously known as the “Hitmarker Freeze”.*  
 *This issue is **global** and server based, meaning all players in the match contribute to the buildup.*  
-*(Technically, this error should be called an **Empty String RefCount Freeze**, but **“VD RefCount Freeze”** will make it easier to understand, since damaging vehicle entities from `Callback_VehicleDamage` is what triggers it).*
+*(Technically, this error should be called an **Empty String RefCount Freeze**, but **“VD RefCount Freeze”** will make it easier to understand, since damaging vehicle entities is what triggers it).*
+
+Corrected thanks to [BumbleTree](https://github.com/BumbleTree) in [Issue #2](https://github.com/oJumpy/Black-Ops-3-Zombies-Info/issues/2).
 
 ### - What Causes This Freeze
-Every time any type of damage hits **any vehicle entity** (Spiders, Meatballs, Bugs), the game runs [`Callback_VehicleDamage`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/gametypes/_globallogic_vehicle.gsc#L49) in [`globallogic_vehicle.gsc`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/gametypes/_globallogic_vehicle.gsc). Inside this function, a leftover [`logPrint`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/gametypes/_globallogic_vehicle.gsc#L258) line executes on **every single hit**:
+Every time any type of damage hits **any vehicle entity** (Spiders, Meatballs, Bugs), the game runs [`Callback_VehicleDamage`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/gametypes/_globallogic_vehicle.gsc#L49) in [`globallogic_vehicle.gsc`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/gametypes/_globallogic_vehicle.gsc). This function calls the shared damage feedback script to display a hitmarker:
 
 ```gsc
-logPrint("VD;" + lpselfnum + ";" + lpselfteam + ";" + lpattackGuid + ";" + lpattacknum + ";" + lpattackerteam + ";" + lpattackname + ";" + weapon.name + ";" + iDamage + ";" + sMeansOfDeath + ";" + sHitLoc + "\n");
+eAttacker thread damagefeedback::update(sMeansOfDeath, eInflictor);
 ```
 
-Because variables like `lpselfteam` and `lpattackGuid` are set to empty strings (`""`), every hit adds references to the engine's **Empty String** (`""`).
+Inside [`damagefeedback_shared.gsc`](https://github.com/oJumpy/t7-zm_scripts/blob/main/shared/damagefeedback_shared.gsc#L284), it calls the Engine `PlayHitMarker` function:
 
-In the game engine, string reference counts are stored as a **16-bit number, which has a hard limit of `65,535`**.
+```gsc
+self PlayHitMarker(hitAlias, damageStage, perkFeedback, damage_feedback_get_dead(victim, mod, weapon, damageStage));
+```
+
+We believe it's blank, because vehicle enemies use shared Multiplayer code, `PlayHitMarker` expects a perk icon name (like `"flakjacket"`). In Zombies, enemies don't have perks, so `perkFeedback` is left blank (`undefined`).
+
+When this parameter is left blank, the game engine defaults to an **Empty String** (`""`), but has a bug where it **forgets to delete that empty string when the hitmarker finishes**, permanently leaking a reference on every hitmarker.
+
+In the game engine, string reference counts are stored as a **16-bit number with a hard limit of `65,535`**.
 
 Every hit against a vehicle enemy pushes this number higher. Once it reaches **65,535**, the counter **overflows back to 0**. The game engine misinterprets this as the string having zero uses left, tries to delete it, gets stuck in an infinite loop, and **freezes the game**.
+
+In the new built in counter in [BOII-Community Client](https://gitlab.com/boiii-community/BOIII-Community) `cg_drawVehicleHits` it takes roughly **~117,000 to 119,000 hits** with standard weapons to trigger the freeze *(previously estimated around ~60k on older LiveSplit not being as accurate)*. Certain weapons (like the Vesper) leak fewer references per hit because hitmarkers are throttled to once per server frame (20hz).
 
 ### - How to Avoid the Freeze
 On **Zetsubou No Shima**, use mostly **Electric Cherry** and **Skull of Nan Sapwe** to kill spiders.
