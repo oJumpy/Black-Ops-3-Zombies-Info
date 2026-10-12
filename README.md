@@ -506,16 +506,55 @@ In the [BOII-Community Client](https://gitlab.com/boiii-community/BOIII-Communit
 
 ## Skull of Nan Sapwe Error
 
-### - What Causes The Error
-This error is caused by **putting the Skull of Nan Sapwe away early while zombies are still dying**. 
+Corrected thanks to [BumbleTree](https://github.com/BumbleTree) in [Issue #3](https://github.com/oJumpy/Black-Ops-3-Zombies-Info/issues/3).
 
-Starting on **Round 162+** (and [other frozen rounds](https://github.com/oJumpy/Black-Ops-3-Zombies-Info#121-123-127-129-133-135-140-141-143-150-152-153-154-162)), zombies take **1 to 3 seconds** to actually die instead of dying instantly. 
+### - What Causes This Error
+Every time you take out the **Skull of Nan Sapwe**, the game starts a background watcher thread ([`function_79e34741`](https://github.com/oJumpy/t7-zm_scripts/blob/43d26ebadce245c3ebcf086a0c06d3355e08c2e7/zm/_zm_weap_keeper_skull.gsc#L731)) waiting for you to put it away.
 
-If you put the Skull away **while those zombies are still alive and being killed**, the script stops before cleaning up. This leaves threads permanently stuck. 
+```gsc
+self waittill("weapon_change");
+if(self.sessionstate != "spectator")
+{
+	w_current = self GetCurrentWeapon();
+	if(isdefined(w_current) && zm_utility::is_hero_weapon(w_current))
+	{
+		self.var_230f31ae = 1;
+		self thread function_79e34741();
+		wait(1);
+	}
+}
+```
 
-### - How To Avoid The Error
-* **Wait 1 to 3 seconds for zombies to die:** On Round 162+ especially, do not put the Skull away while zombies are actively dying.
-* **Manually swap weapons:** Always switch your weapon to put the Skull away rather than letting it do it automatically when at 0%.
+This thread [`function_79e34741`](https://github.com/oJumpy/t7-zm_scripts/blob/43d26ebadce245c3ebcf086a0c06d3355e08c2e7/zm/_zm_weap_keeper_skull.gsc#L770) **only terminates when you press the actual Switch Weapon button** [`WeaponSwitchButtonPressed()`](https://github.com/oJumpy/t7-zm_scripts/blob/43d26ebadce245c3ebcf086a0c06d3355e08c2e7/zm/_zm_weap_keeper_skull.gsc#L775) (controller Y / Triangle, or the dedicated keyboard Switch Weapon key).
+
+```gsc
+function function_79e34741()
+{
+	self endon("disconnect");
+	while(1)
+	{
+		if(self WeaponSwitchButtonPressed())
+		{
+			self.var_230f31ae = 0;
+			self GadgetPowerSet(0, self.var_118ab24e - 2);
+			self SetWeaponAmmoClip(level.var_c003f5b, 0);
+			self GadgetDeactivate(0, level.var_c003f5b);
+			break;
+		}
+		wait(0.05);
+	}
+}
+```
+
+If the Skull is put away by:
+* Letting it drain to **0% ammo** making it go away automatically will leak
+* Scrolling the **mouse wheel** (even if bound) will leak
+
+Because the game never registers the switch button press. The thread remains permanently stuck accumulating GSC Variables.
+
+### - How to Avoid the Error
+* Whenever the Skull runs out of ammo at 0%, or if you put it away using the scroll wheel or automatically, **press your dedicated Switch Weapon button once** (controller Y / Triangle, or a keyboard key bound to Switch Weapon).
+Because all stuck threads check this button every frame, **a single press will delete every accumulated thread.**
 
 ---
 
