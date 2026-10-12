@@ -492,8 +492,6 @@ In the game engine, string reference counts are stored as a **16-bit number with
 
 Every hit against a vehicle enemy pushes this number higher. Once it reaches **65,535**, the counter **overflows back to 0**. The game engine misinterprets this as the string having zero uses left, tries to delete it, gets stuck in an infinite loop, and **freezes the game**.
 
-In the new built in counter in [BOII-Community Client](https://gitlab.com/boiii-community/BOIII-Community) `cg_drawVehicleHits` it takes roughly **~117,000 to 119,000 hits** with standard weapons to trigger the freeze *(previously estimated around ~60k on older LiveSplit not being as accurate)*. Certain weapons (like the Vesper) leak fewer references per hit because hitmarkers are throttled to once per server frame (20hz).
-
 ### - How to Avoid the Freeze
 On **Zetsubou No Shima**, use mostly **Electric Cherry** and **Skull of Nan Sapwe** to kill spiders.
 
