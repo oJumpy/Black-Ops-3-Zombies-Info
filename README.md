@@ -695,7 +695,7 @@ In `_sentinel_drone.csc`, function `sentinel_launch_piece`:
   Since valks hover further than that, meaning the script hits the `else` block, breaks the loop, just abandons those entities and these invisible dynamic entities stay active on the map forever.
 
 15 Units btw… <br>
-<img src="https://github.com/user-attachments/assets/4195380b-e890-4694-9596-831f8c36aeec" width="400" /> <br>
+![alt text](assets/Valk%20leak.png)
 This is why i wanna believe it was a typo
 
 So you can actually safely kill valks, with shield blast, but you have to be careful to avoid the two leaks mentioned above.
