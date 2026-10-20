@@ -28,6 +28,8 @@
 * **Mechanics / Infos**
   * [AATs (Alternate Ammo Types) & Lucky Crit](#aats-alternate-ammo-types)
   * [Frozen / Torso / Invisible Zombie Rounds](#frozen-rounds)
+  * [Shadows of Evil Death Barrier Timings](#shadows-of-evil-death-barrier-timings)
+    * [Shadows of Evil Death Barrier Calculator](#shadows-of-evil-death-barrier-calculator)
   * [Weighted Mystery Box Weapons](#weighted-weapons)
   * [25 Day Error & Bypass](#25-day-error-bypass)
 * **Errors**
@@ -295,6 +297,76 @@ Rounds where the **Bows** kills zombies properly:
 
 **Fire Bow:**
 > ## **1-120, 122, 124-126, 128, 130-132, 134, 136-139, 142, 144-149, 151, 155-161**
+
+---
+
+### Shadows of Evil Death Barrier Timings
+
+* The Out-Of-Playable-Area (OOPA) monitor checks your position every 3 seconds and will kill you if you are not in a playable area. For simplicity, we will call it the **Death Barrier**.
+
+* These timings are only accurate after a `fast_restart`. A normal `map_restart` can give you a different starting time for the first check.
+
+* Additionally, your character adds an offset to the **Death Barrier** check:
+
+| Boxer | Detective | Jessica | Nero |
+| :---: | :---: | :---: | :---: |
+| 0.85 | 1.00 | 1.15 | 1.30 |
+
+* For example, playing as Boxer means the **Death Barrier** first checks your position at 0.85, then 3.85, then 6.85, then 9.85, and so on.
+
+* Opening a door very close to the next **Death Barrier** check can delay it by around 1.7 seconds.
+
+* **Be careful with the timings.** For example, if the check happens at 45.85, do not start running into the **Death Barrier** at 45.70 or 45.80, as you will die if you are still inside when the check happens at 45.85. Wait until slightly after 45.85 before starting your run.
+
+### Timings
+
+| Boxer | Detective | Jessica | Nero |
+| ----: | ----: | ----: | ----: |
+| 30.85 | 31.00 | 31.15 | 31.30 |
+| 33.85 | 34.00 | 34.15 | 34.30 |
+| 36.85 | 37.00 | 37.15 | 37.30 |
+| 39.85 | 40.00 | 40.15 | 40.30 |
+| 42.85 | 43.00 | 43.15 | 43.30 |
+| 45.85 | 46.00 | 46.15 | 46.30 |
+| 48.85 | 49.00 | 49.15 | 49.30 |
+| 51.85 | 52.00 | 52.15 | 52.30 |
+| 54.85 | 55.00 | 55.15 | 55.30 |
+| 57.85 | 58.00 | 58.15 | 58.30 |
+| 1:00.85 | 1:01.00 | 1:01.15 | 1:01.30 |
+| 1:03.85 | 1:04.00 | 1:04.15 | 1:04.30 |
+| 1:06.85 | 1:07.00 | 1:07.15 | 1:07.30 |
+| 1:09.85 | 1:10.00 | 1:10.15 | 1:10.30 |
+| 1:12.85 | 1:13.00 | 1:13.15 | 1:13.30 |
+| 1:15.85 | 1:16.00 | 1:16.15 | 1:16.30 |
+| 1:18.85 | 1:19.00 | 1:19.15 | 1:19.30 |
+| 1:21.85 | 1:22.00 | 1:22.15 | 1:22.30 |
+
+**From this point onward, we assume the first door has been opened close to the Death Barrier check**  
+This delays the check by around 1.7 seconds, for the second door
+
+| Boxer | Detective | Jessica | Nero |
+| ----: | ----: | ----: | ----: |
+| 1:26.55 | 1:26.70 | 1:26.85 | 1:27.00 |
+| 1:29.55 | 1:29.70 | 1:29.85 | 1:30.00 |
+| 1:32.55 | 1:32.70 | 1:32.85 | 1:33.00 |
+| 1:35.55 | 1:35.70 | 1:35.85 | 1:36.00 |
+| 1:38.55 | 1:38.70 | 1:38.85 | 1:39.00 |
+| 1:41.55 | 1:41.70 | 1:41.85 | 1:42.00 |
+| 1:44.55 | 1:44.70 | 1:44.85 | 1:45.00 |
+| 1:47.55 | 1:47.70 | 1:47.85 | 1:48.00 |
+| 1:50.55 | 1:50.70 | 1:50.85 | 1:51.00 |
+| 1:53.55 | 1:53.70 | 1:53.85 | 1:54.00 |
+| 1:56.55 | 1:56.70 | 1:56.85 | 1:57.00 |
+| 1:59.55 | 1:59.70 | 1:59.85 | 2:00.00 |
+| 2:02.55 | 2:02.70 | 2:02.85 | 2:03.00 |
+
+The first door is normally opened within the first 1:25. The second door is opened between 1:25 and 3:00.
+
+These are the timings that have worked in my testing. The door delay can shift the timing, depending how close you are to the **Death Barrier** check so keep that in mind when using the table.
+
+### [Shadows of Evil Death Barrier Calculator](https://ojumpy.github.io/Black-Ops-3-Zombies-Info/tools/death-barrier-calculator/)
+
+Use this calculator to generate the Shadows of Evil Death Barrier timings for your character and the time range you want easier.
 
 ---
 

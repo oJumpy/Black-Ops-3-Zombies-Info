@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadows of Evil Death Barrier Calculator</title>
+  <meta name="description" content="Calculate Shadows of Evil OOPA / Death Barrier check times by character and time range.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --panel: #161b22;
+      --panel2: #0d1117;
+      --line: #30363d;
+      --text: #e6edf3;
+      --muted: #9da7b3;
+      --accent: #79c0ff;
+      --accent-strong: #1f6feb;
+      --warn-bg: #2b2112;
+      --warn-line: #8b6b2e;
+      --warn-text: #f2cc60;
+      --good: #3fb950;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { max-width: 960px; margin: 0 auto; padding: 32px 18px 56px; }
+    header { margin-bottom: 24px; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; font-size: .76rem; }
+    h1 { margin: 7px 0 8px; font-size: clamp(1.7rem, 4vw, 2.5rem); line-height: 1.15; }
+    h2 { margin: 0 0 14px; font-size: 1.1rem; }
+    p { margin: 8px 0; }
+    .muted { color: var(--muted); }
+    .panel { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 20px; margin: 16px 0; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .field { min-width: 0; }
+    .col-span-full { grid-column: 1 / -1; }
+    label, .field-title { display: block; font-weight: 650; margin-bottom: 7px; }
+    input, select {
+      width: 100%; min-height: 44px; padding: 9px 11px; border-radius: 8px;
+      border: 1px solid #424b55; background: var(--panel2); color: var(--text); font: inherit;
+    }
+    input:focus, select:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .hint { font-size: .86rem; color: var(--muted); margin-top: 5px; }
+    .checkrow { display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; }
+    .checkrow input { width: 18px; min-height: 18px; margin: 4px 0 0; flex: 0 0 auto; }
+    .checkrow label { margin: 0; }
+    .door-fields { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    button { cursor: pointer; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; font: inherit; font-weight: 700; }
+    .primary { background: var(--accent-strong); color: white; border-color: var(--accent-strong); }
+    .secondary { background: #21262d; color: var(--text); }
+    button:hover { filter: brightness(1.12); }
+    .warning { border: 1px solid var(--warn-line); border-radius: 10px; background: var(--warn-bg); color: var(--warn-text); padding: 13px 15px; margin: 16px 0; }
+    .status { min-height: 1.5em; color: var(--muted); font-size: .9rem; margin-top: 9px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+    table { border-collapse: collapse; width: 100%; min-width: 360px; font-variant-numeric: tabular-nums; }
+    th, td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+    th { color: var(--muted); font-size: .88rem; font-weight: 700; background: #1c222a; }
+    th:first-child, td:first-child { text-align: left; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #1c222a; }
+    .summary { display: flex; flex-wrap: wrap; gap: 10px 20px; color: var(--muted); margin: 0 0 12px; font-size: .9rem; }
+    .summary strong { color: var(--text); }
+    .empty { padding: 22px; text-align: center; color: var(--muted); }
+    code { background: #252b33; padding: 2px 5px; border-radius: 5px; }
+    footer { margin-top: 22px; color: var(--muted); font-size: .86rem; }
+    @media (max-width: 620px) {
+      main { padding: 22px 12px 40px; }
+      .grid { grid-template-columns: 1fr; gap: 12px; }
+      .panel { padding: 15px; }
+      th, td { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Death Barrier Timing Calculator</h1>
+    <p class="muted">Choose your character and time range to generate the expected OOPA check times.</p>
+  </header>
+
+  <div class="warning">
+    <strong>Important:</strong> These timings are intended for <code>fast_restart</code>. A normal <code>map_restart</code> can have a different first-check offset.
+  </div>
+
+  <section class="panel" aria-labelledby="settings-title">
+    <h2 id="settings-title">Settings</h2>
+    <div class="grid">
+      <div class="field col-span-full">
+        <label for="character">Character</label>
+        <select id="character">
+          <option value="0.85">Boxer — 0.85s</option>
+          <option value="1.00">Detective — 1.00s</option>
+          <option value="1.15">Jessica — 1.15s</option>
+          <option value="1.30">Nero — 1.30s</option>
+          <option value="all">All characters</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="rangeStart">Show times from</label>
+        <input id="rangeStart" type="text" inputmode="decimal" value="1:25.00" autocomplete="off">
+        <div class="hint">Enter seconds (e.g. <code>45.85</code>) or minutes:seconds (e.g. <code>1:25.00</code>).</div>
+      </div>
+      <div class="field">
+        <label for="rangeEnd">Show times until</label>
+        <input id="rangeEnd" type="text" inputmode="decimal" value="2:04.00" autocomplete="off">
+        <div class="hint">The end time is included.</div>
+      </div>
+    </div>
+
+    <div class="checkrow">
+      <input id="doorDelay" type="checkbox" checked>
+      <div>
+        <label for="doorDelay">Apply the first-door delay (+1.70 seconds)</label>
+        <div class="hint">Use this when the first door is opened very close to a <strong>Death Barrier check</strong>. This assumes that one delayed check and the following schedule are shifted by 1.70 seconds.</div>
+      </div>
+    </div>
+    <div class="grid door-fields" id="doorFields">
+      <div class="field">
+        <label for="doorNearTime">Door opened close to the <strong>Death Barrier</strong> check</label>
+        <input id="doorNearTime" type="text" inputmode="decimal" value="1:25.00" autocomplete="off">
+        <div class="hint">The calculator finds the regular check closest to this time, delays that check, then shifts later checks by the same amount.</div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="calculate" type="button">Calculate timings</button>
+      <button class="secondary" id="copy" type="button">Copy timings</button>
+      <button class="secondary" id="reset" type="button">Reset defaults</button>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="results-title">
+    <h2 id="results-title">Calculated checks</h2>
+    <div class="summary" id="summary"></div>
+    <div class="table-wrap" id="results">
+      <div class="empty">Choose your settings and calculate timings.</div>
+    </div>
+  </section>
+
+  <p class="muted">Character offsets from testing: Boxer 0.85, Detective 1.00, Jessica 1.15, Nero 1.30. Opening a door or updating a zone can delay a check; additional door/zone interactions may shift the actual schedule beyond this simple model.</p>
+  <footer>Unofficial community calculator for Black Ops 3 Zombies. Timings are estimates based on observed behaviour, not a guarantee for every run.</footer>
+</main>
+<script>
+(() => {
+  const CHARACTERS = [
+    { name: 'Boxer', offset: 0.85 },
+    { name: 'Detective', offset: 1.00 },
+    { name: 'Jessica', offset: 1.15 },
+    { name: 'Nero', offset: 1.30 },
+  ];
+  const CHECK_INTERVAL = 3;
+  const DOOR_DELAY_SECONDS = 1.70;
+  const $ = id => document.getElementById(id);
+  let lastCopyText = '';
+
+  function parseTime(raw) {
+    const value = String(raw).trim();
+    if (!value) throw new Error('Enter a start, end, and door time.');
+    if (value.includes(':')) {
+      const parts = value.split(':');
+      if (parts.length !== 2 || !/^\d+$/.test(parts[0].trim())) throw new Error(`Invalid time: ${value}`);
+      const minutes = Number(parts[0].trim());
+      const seconds = Number(parts[1].trim());
+      if (!Number.isFinite(seconds) || seconds < 0 || seconds >= 60) throw new Error(`Seconds must be from 0 to under 60: ${value}`);
+      return minutes * 60 + seconds;
+    }
+    const seconds = Number(value);
+    if (!Number.isFinite(seconds) || seconds < 0) throw new Error(`Invalid time: ${value}`);
+    return seconds;
+  }
+
+  function fmtTime(seconds) {
+    // Round first to centiseconds to avoid floating-point display artefacts.
+    const centiseconds = Math.max(0, Math.round(seconds * 100));
+    const wholeSeconds = Math.floor(centiseconds / 100);
+    const cs = centiseconds % 100;
+    const mins = Math.floor(wholeSeconds / 60);
+    const secs = wholeSeconds % 60;
+    const secText = `${String(secs).padStart(mins > 0 ? 2 : 1, '0')}.${String(cs).padStart(2, '0')}`;
+    return mins > 0 ? `${mins}:${String(secs).padStart(2, '0')}.${String(cs).padStart(2, '0')}` : secText;
+  }
+
+  function calculate() {
+    const start = parseTime($('rangeStart').value);
+    const end = parseTime($('rangeEnd').value);
+    const interval = CHECK_INTERVAL;
+    const delayEnabled = $('doorDelay').checked;
+    const delay = DOOR_DELAY_SECONDS;
+    const doorTime = delayEnabled ? parseTime($('doorNearTime').value) : null;
+    if (end < start) throw new Error('The end time must be later than or equal to the start time.');
+    const selected = $('character').value === 'all' ? CHARACTERS : CHARACTERS.filter(c => c.offset === Number($('character').value));
+    const schedules = selected.map(character => {
+      // Find the nominal check closest to the chosen door time. Only this check
+      // and later nominal checks are shifted by the configured delay.
+      let firstShiftIndex = null;
+      if (delayEnabled) {
+        firstShiftIndex = Math.max(0, Math.round((doorTime - character.offset) / interval));
+      }
+      const shiftedCheck = firstShiftIndex === null ? null : character.offset + firstShiftIndex * interval + delay;
+      const baseFirstIndex = Math.max(0, Math.floor((start - character.offset) / interval) - 2);
+      const rows = [];
+      // Iterate a little beyond the requested end because the shifted schedule may move a check into range.
+      const upper = end + (delayEnabled ? delay : 0);
+      const maxIndex = Math.max(0, Math.ceil((upper - character.offset) / interval) + 2);
+      for (let n = baseFirstIndex; n <= maxIndex; n++) {
+        const nominal = character.offset + n * interval;
+        const displayed = delayEnabled && n >= firstShiftIndex ? nominal + delay : nominal;
+        if (displayed + 1e-7 >= start && displayed <= end + 1e-7) {
+          rows.push({ n: n + 1, time: displayed, nominal, shifted: delayEnabled && n >= firstShiftIndex });
+        }
+      }
+      return { character, firstShiftIndex, shiftedCheck, rows };
+    });
+
+    const anyRows = schedules.some(s => s.rows.length);
+    const summaryParts = [`Range: <strong>${escapeHtml(fmtTime(start))}–${escapeHtml(fmtTime(end))}</strong>`, `Interval: <strong>${escapeHtml(interval.toFixed(2))}s</strong>`];
+    if (delayEnabled) {
+      summaryParts.push(`Door delay: <strong>+${escapeHtml(delay.toFixed(2))}s</strong> from check near <strong>${escapeHtml(fmtTime(doorTime))}</strong>`);
+      summaryParts.push(`First delayed check (Boxer baseline): <strong>${escapeHtml(fmtTime(CHARACTERS[0].offset + Math.max(0, Math.round((doorTime - CHARACTERS[0].offset) / interval)) * interval + delay))}</strong>`);
+    } else {
+      summaryParts.push('Door delay: <strong>off</strong>');
+    }
+    $('summary').innerHTML = summaryParts.join('<span>·</span>');
+
+    const isAll = $('character').value === 'all';
+    let html = '<table><thead><tr>';
+    if (isAll) {
+      html += '<th scope="col">Boxer</th><th scope="col">Detective</th><th scope="col">Jessica</th><th scope="col">Nero</th>';
+      const cycleKeys = [...new Set(schedules.flatMap(s => s.rows.map(row => row.n)))].sort((a, b) => a - b);
+      if (!cycleKeys.length) {
+        html += '</tr></thead></table><div class="empty">No checks fall inside this time range. Try a wider range.</div>';
+      } else {
+        html += '</tr></thead><tbody>';
+        cycleKeys.forEach(cycle => {
+          html += '<tr>';
+          for (const schedule of schedules) {
+            const row = schedule.rows.find(item => item.n === cycle);
+            html += `<td>${row ? escapeHtml(fmtTime(row.time)) : '—'}</td>`;
+          }
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+      }
+    } else {
+      const schedule = schedules[0];
+      html += '<th scope="col">Character</th><th scope="col">Death Barrier check</th><th scope="col">Door delay applied?</th></tr></thead>';
+      if (!schedule.rows.length) {
+        html += '</table><div class="empty">No checks fall inside this time range. Try a wider range.</div>';
+      } else {
+        html += '<tbody>';
+        schedule.rows.forEach(row => {
+          html += `<tr><td>${escapeHtml(schedule.character.name)}</td><td>${escapeHtml(fmtTime(row.time))}</td><td>${row.shifted ? 'Yes' : 'No'}</td></tr>`;
+        });
+        html += '</tbody></table>';
+      }
+    }
+    $('results').innerHTML = html;
+
+    const copyLines = [];
+    if (isAll) {
+      copyLines.push('| Boxer | Detective | Jessica | Nero |', '| ----: | ----: | ----: | ----: |');
+      const cycleKeys = [...new Set(schedules.flatMap(s => s.rows.map(row => row.n)))].sort((a, b) => a - b);
+      cycleKeys.forEach(cycle => {
+        const times = schedules.map(schedule => {
+          const row = schedule.rows.find(item => item.n === cycle);
+          return row ? fmtTime(row.time) : '—';
+        });
+        copyLines.push(`| ${times[0]} | ${times[1]} | ${times[2]} | ${times[3]} |`);
+      });
+    } else {
+      copyLines.push(`Character: ${schedules[0].character.name}`, `Range: ${fmtTime(start)} - ${fmtTime(end)}`, `Door delay: ${delayEnabled ? `+${delay.toFixed(2)}s near ${fmtTime(doorTime)}` : 'off'}`, '', '| Character | Death Barrier check | Door delay applied? |', '| :--- | ----: | :---: |');
+      schedules[0].rows.forEach(row => copyLines.push(`| ${schedules[0].character.name} | ${fmtTime(row.time)} | ${row.shifted ? 'Yes' : 'No'} |`));
+    }
+    lastCopyText = copyLines.join('\n');
+    if (!anyRows) $('status').textContent = 'No checks found in this range.';
+    else $('status').textContent = `${schedules.reduce((sum, s) => sum + s.rows.length, 0)} check time(s) calculated.`;
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  }
+
+  function onCalculate() {
+    try {
+      calculate();
+    } catch (error) {
+      $('status').textContent = error.message || 'Could not calculate these timings.';
+      $('results').innerHTML = '<div class="empty">Please correct the settings above and calculate again.</div>';
+      $('summary').textContent = '';
+      lastCopyText = '';
+    }
+  }
+
+  $('calculate').addEventListener('click', onCalculate);
+  $('copy').addEventListener('click', async () => {
+    if (!lastCopyText) onCalculate();
+    if (!lastCopyText) return;
+    try {
+      await navigator.clipboard.writeText(lastCopyText);
+      $('status').textContent = 'Timings copied as Markdown.';
+    } catch (_) {
+      const textArea = document.createElement('textarea');
+      textArea.value = lastCopyText;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      const ok = document.execCommand('copy');
+      textArea.remove();
+      $('status').textContent = ok ? 'Timings copied as Markdown.' : 'Copy failed. Select and copy the table manually.';
+    }
+  });
+  $('reset').addEventListener('click', () => {
+    $('character').value = '0.85';
+    $('rangeStart').value = '1:25.00';
+    $('rangeEnd').value = '2:04.00';
+    $('doorDelay').checked = true;
+    $('doorNearTime').value = '1:25.00';
+    $('doorFields').style.opacity = '1';
+    onCalculate();
+  });
+  $('doorDelay').addEventListener('change', () => {
+    $('doorFields').style.opacity = $('doorDelay').checked ? '1' : '.55';
+    onCalculate();
+  });
+  for (const id of ['character','rangeStart','rangeEnd','doorNearTime']) {
+    $(id).addEventListener('change', onCalculate);
+  }
+  onCalculate();
+})();
+</script>
+</body>
+</html>
