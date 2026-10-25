@@ -47,6 +47,7 @@
   * [Darkness](#darkness)
     * [Darkness Video + Images](#darkness-video--images)
   * [Instakill Drop Behavior](#instakill-drop-behavior)
+  * [The Giant Free Perk Bottle](#the-giant-free-perk-bottle)
   * [Bugs/Parasites Behavior on Shadows of Evil](#bugsparasites-behavior-on-shadows-of-evil)
   * [Special Enemies Spawn Delays](#special-enemies-delay)
   * [Der Eisendrache Dogs Health Bug](#der-eisendrache-dogs-health-behavior)
@@ -1053,6 +1054,68 @@ Why this is weird: Gorod Krovi has Challenges, free perk bottles and perk slots,
 - **The Giant** idk
 - **ZnS** and **Revelations** registers permanent zombie death callbacks that never get deregistered
 - **Shangri-La** seems to be constantly monitoring for drops, so something happens there?
+
+---
+
+### The Giant Free Perk Bottle
+
+The teleporter can give a free perk bottle if it initially selects full_ammo, then rerolls into free_perk
+
+#### - How it happens
+
+When the teleporter drop is selected, the game first picks a powerup from `level.zombie_special_drop_array`
+
+The list includes `full_ammo`, `free_perk` and `nothing`
+
+If `free_perk` or `nothing` is selected directly, no bottle is spawned. The map handles it the same way as nothing and returns no powerup
+
+If `full_ammo` is selected, the game can reroll it into another powerup, starting from Round 11. **The reroll chance increases by 5 percentage points per round**
+
+From Round 16 onward, there's also a separate `nothing` roll that can replace the selected powerup and cancel the drop before the reroll happens
+
+From [`powerup_special_drop_override()`](https://github.com/oJumpy/t7-zm_scripts/blob/main/zm/zm_factory.gsc#L1607C1-L1669C2):
+
+```gsc
+case "full_ammo":
+{
+    if (level.round_number > 10 &&
+        RandomInt(100) < (level.round_number - 10) * 5)
+    {
+        // Pick another powerup
+        powerup = level.zombie_powerup_array[
+            RandomInt(level.zombie_powerup_array.size)
+        ];
+    }
+
+    break;
+}
+```
+The reroll must select `free_perk` from `level.zombie_powerup_array` for the bottle to spawn
+
+For example, on Round 16 the reroll chance is 30%. This is the chance to reroll `full_ammo`, **not** the chance to get a free perk bottle
+
+The reroll picks from `level.zombie_powerup_array`, which contains `free_perk`. If the reroll selects it, the game changes the powerup variable to `free_perk`
+
+The code does not check the new value again, so it skips the part that handles a directly selected `free_perk`
+
+#### - Why the same bottle does not appear when selected directly
+
+When `free_perk` or `nothing` is selected as the initial special drop, the map handles it as a no-drop result and sets `powerup = undefined`
+
+This means a directly selected `free_perk` does not give a bottle, but a `free_perk` selected by the `full_ammo` reroll can
+
+#### - Confirmed in-game
+
+I tested the full condition and confirmed that the bottle successfully gave a perk
+
+```text
+INITIAL=full_ammo
+CANDIDATE=free_perk
+RESULT=free_perk
+PERK=specialty_doubletap2
+NUM_PERKS_BEFORE=0
+NUM_PERKS_AFTER=1
+```
 
 ---
 
